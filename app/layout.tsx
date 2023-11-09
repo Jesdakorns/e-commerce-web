@@ -10,6 +10,8 @@ import LogoMain from '@/src/assets/images/logo_main.png';
 import Toast from "@/components/Toast";
 import AppBarUI from "@/components/AppBar";
 import DefaultLayout from "@/components/Layout";
+import { redirect, usePathname } from "next/navigation";
+import { headers } from 'next/headers';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +27,17 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
+  // const headersList = headers();
+  // const referer = headersList.get("referer");
+  // const pathname = referer?.replace(`${process.env.NEXTAUTH_URL}`, '')
+  // console.log("PATHNAME",);
+  // const session = await getServerSession(authOptions);
+  // console.log(`🚀 ~ file: layout.tsx ~ line 35 ~ session`, session)
+  // if (!session && pathname !== '/signin') {
+  //   redirect('/signin')
+  // } else if (session && pathname === '/signin') {
+  //   redirect('/')
+  // }
 
   return (
     <html lang="en">
