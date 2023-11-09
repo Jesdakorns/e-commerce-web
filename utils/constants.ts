@@ -1,0 +1,6 @@
+export enum NOTIFICATION_VARIANT {
+    SUCCESS = 'SUCCESS',
+    WARNING = 'WARNING',
+    DANGEROUS = 'DANGEROUS',
+    INFO = 'INFO',
+}
