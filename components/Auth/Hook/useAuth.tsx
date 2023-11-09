@@ -45,7 +45,7 @@ const useAuth = () => {
 
     const onSignGoogle = async () => {
         const res = await signIn('google', {
-            redirect: false,
+            redirect: true,
             callbackUrl: '/'
         });
     }
