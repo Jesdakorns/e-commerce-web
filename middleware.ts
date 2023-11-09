@@ -9,9 +9,9 @@ export async function middleware(req: NextRequest) {
     raw: true,
   });
   const { pathname } = req.nextUrl
-  if (!token && pathname !== '/signin') {
-    return NextResponse.redirect(new URL('/signin', req.url));
-  }
+  // if (!token && pathname !== '/signin') {
+  //   return NextResponse.redirect(new URL('/signin', req.url));
+  // }
   return NextResponse.next();
 }
 
