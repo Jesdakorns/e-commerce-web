@@ -71,17 +71,17 @@ export default function DefaultLayout(props: Props) {
             <Box id="back-to-top-anchor" />
             {isPathSignin ? (
                 null
-            ) : !matchesMobile ? (
+            ) : (
                 <>
                     <AppBarUI />
                 </>
-            ) : null}
+            )}
 
             <Box sx={{ pb: isPathSignin ? 0 : { xs: '92px', md: 4 }, pt: isPathSignin ? 0 : { xs: 0, md: '92px' } }} >
                 {props.children}
             </Box >
 
-            {
+            {/* {
                 isPathSignin ? (
                     null
                 ) : matchesMobile ? (
@@ -89,7 +89,7 @@ export default function DefaultLayout(props: Props) {
                         <AppBarUI />
                     </>
                 ) : null
-            }
+            } */}
 
             <ScrollTop {...props}>
                 <Fab size="small" aria-label="scroll back to top">

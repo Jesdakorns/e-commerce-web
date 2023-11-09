@@ -175,7 +175,7 @@ export default function AppBarUI(props: Props) {
         <Box my={1}>
             <StyledAppBar sx={{ background: '#ffff', my: 1, top: { xs: 'auto' }, bottom: { xs: 10, md: 'auto' } }} enableColorOnDark>
                 <Toolbar>
-                    <Container maxWidth="xl">
+                    <Container maxWidth="lg">
                         <Box display='flex' justifyContent='space-between' alignItems='center'>
                             <StyledBoxLeft component="div" data-route="/" display={{ xs: 'none', md: 'flex' }}>
                                 <Image src={Logo.src} width={30} height={30} alt='' />

@@ -17,7 +17,7 @@ const Home = () => {
   console.log(`🚀 ~ file: Home.tsx ~ line 17 ~ Home ~ user`, user)
   return (
     <section className="py-24">
-      <Container maxWidth='xl'>
+      <Container maxWidth='lg'>
 
         <div className="container">
 
