@@ -5,9 +5,9 @@ import { authOptions } from "@/app/api/auth/options";
 
 const Page = async () => {
 
-  // const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
 
-  // if (session) redirect('/')
+  if (session) redirect('/')
 
   return <Auth></Auth>
 };
