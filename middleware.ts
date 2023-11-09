@@ -13,11 +13,16 @@ export async function middleware(req: NextRequest) {
   console.log(`🚀 ~ file: middleware.ts ~ line 12 ~ middleware ~ req`, req)
   console.log(`🚀 ~ file: middleware.ts ~ line 12 ~ middleware ~ NEXT_PUBLIC_NEXTAUTH_SECRET`, process?.env?.NEXT_PUBLIC_NEXTAUTH_SECRET)
   console.log(`🚀 ~ file: middleware.ts ~ line 12 ~ middleware ~ token`, token)
-  if (!token) {
+  console.log(`🚀 ~ file: middleware.ts ~ line 12 ~ middleware ~ url`, req.nextUrl.pathname.startsWith("/signin") )
+  if (req.nextUrl.pathname.startsWith("/signin") && token) {
+    return NextResponse.redirect(new URL('/', req.url));
+  }
+
+  if (!token && !req.nextUrl.pathname.startsWith("/signin")) {
     return NextResponse.redirect(new URL('/signin', req.url));
   }
 }
 export const config = {
-  matcher: ['/', '/test'],
+  matcher: ['/', '/test', '/signin'],
 };
 
