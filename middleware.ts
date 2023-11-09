@@ -8,6 +8,7 @@ export async function middleware(req: NextRequest) {
     req,
     secret: process?.env?.NEXT_PUBLIC_NEXTAUTH_SECRET,
     raw: true,
+    cookieName: process.env.NODE_ENV === 'production' ? '__Secure-next-auth.session-token' : 'next-auth.session-token'
   });
   console.log(`🚀 ~ file: middleware.ts ~ line 12 ~ middleware ~ req`, req)
   console.log(`🚀 ~ file: middleware.ts ~ line 12 ~ middleware ~ NEXT_PUBLIC_NEXTAUTH_SECRET`, process?.env?.NEXT_PUBLIC_NEXTAUTH_SECRET)
