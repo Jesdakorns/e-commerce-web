@@ -13,8 +13,6 @@ export const credentialsProvider = CredentialsProvider({
         try {
             // const res = await postSignIn({ email, password })
             const user = { id: '1', name: 'J Smith', email: 'jsmith@example.com', image: '' }
-
-            console.log(`🚀 ~ file: credentialsProvider.ts ~ line 18 ~ authorize ~ data`, JSON.parse(data))
             if (data) {
                 // Any object returned will be saved in `user` property of the JWT
                 return JSON.parse(data)
