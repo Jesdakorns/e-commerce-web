@@ -6,6 +6,7 @@ import CustomProviders from "./Provider";
 import LogoMain from '@/src/assets/images/logo_main.png';
 import Toast from "@/components/Toast";
 import DefaultLayout from "@/components/Layout";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,16 +25,16 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <ThemeRegistry options={{ key: "mui" }}>
-        <body className={inter.className} suppressHydrationWarning={true}>
-          <CustomProviders>
-            <DefaultLayout>
-              {children}
-            </DefaultLayout>
-            <Toast />
-          </CustomProviders>
-        </body>
-      </ThemeRegistry>
+        <ThemeRegistry options={{ key: "mui" }}>
+          <body className={inter.className} suppressHydrationWarning={true}>
+            <CustomProviders>
+              <DefaultLayout>
+                {children}
+              </DefaultLayout>
+              <Toast />
+            </CustomProviders>
+          </body>
+        </ThemeRegistry>
     </html>
   );
 }

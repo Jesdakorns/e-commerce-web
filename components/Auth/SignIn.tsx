@@ -10,12 +10,13 @@ import { RULES } from '@/utils/rules'
 import { themeColor } from '@/utils/themeColor'
 import ButtonAuthSocial from './ButtonAuthSocial'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { UseGoogleLoginOptionsAuthCodeFlow } from '@react-oauth/google'
 
 interface Props {
     isShow?: boolean
     onClick?: React.MouseEventHandler<HTMLDivElement>
     onSignIn?: React.MouseEventHandler<HTMLFormElement>
-    onSignInGoogle?: React.MouseEventHandler<HTMLButtonElement>
+    onSignInGoogle?: (options?: UseGoogleLoginOptionsAuthCodeFlow) => void
 }
 
 const SignIn = ({ isShow = true, onSignIn, ...props }: Props) => {

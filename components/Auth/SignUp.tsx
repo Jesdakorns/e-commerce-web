@@ -11,12 +11,13 @@ import { themeColor } from '@/utils/themeColor'
 import RadioGroupForm from '@/components/Input/RadioGroup'
 import { IoAddCircle } from 'react-icons/io5'
 import ButtonAuthSocial from './ButtonAuthSocial'
+import { UseGoogleLoginOptionsAuthCodeFlow } from '@react-oauth/google'
 
 interface Props {
     isShow?: boolean
     onClick?: React.MouseEventHandler<HTMLDivElement>
     onSignUp?: React.MouseEventHandler<HTMLButtonElement>
-    onSignInGoogle?: React.MouseEventHandler<HTMLButtonElement>
+    onSignInGoogle?: (options?: UseGoogleLoginOptionsAuthCodeFlow) => void
 }
 
 const SignUp = ({ isShow = true, onSignUp, ...props }: Props) => {

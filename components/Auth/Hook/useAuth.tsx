@@ -1,7 +1,11 @@
+'use client'
+
 import { useAppContext } from '@/context/AppProvider';
-import { postSignIn, postSignUp } from '@/network/api/api';
+import { postSignIn, postSignInGoogle, postSignUp } from '@/network/api/api';
 import { NOTIFICATION_VARIANT } from '@/utils/constants';
-import { signIn } from 'next-auth/react';
+import { useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { FieldValue, UseFormReturn, useForm } from 'react-hook-form';
@@ -43,17 +47,26 @@ const useAuth = () => {
     const [isMode, setIsMode] = useState(false)
 
 
-    const onSignGoogle = async () => {
-        const res = await signIn('google', {
-            redirect: false,
-            callbackUrl: '/'
-        });
-        // const res = await signIn("credentials", {
-        //     mode: 'google',
-        //     callbackUrl: '/',
-        //     redirect: false,
-        // })
-    }
+    const onSignGoogle = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            const userInfo = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+            }).then(res => res.data);
+            const res = await postSignInGoogle({ email: userInfo?.email || '', name: userInfo?.name || '', image: userInfo?.picture || '' })
+            if (res?.httpStatusCode === 201) {
+                console.log('JSON.stringify(res?.data)', JSON.stringify(res?.data))
+                const resLogin = await signIn("credentials", {
+                    data: JSON.stringify(res?.data),
+                    callbackUrl: '/',
+                    redirect: false,
+                })
+                if (resLogin?.status === 200) {
+                    router.replace("/");
+                }
+            }
+            console.log(userInfo);
+        },
+    });
 
     const onSignIn = handleSubmit(async (params: FromProps) => {
         const res = await postSignIn({
@@ -79,7 +92,7 @@ const useAuth = () => {
         }
         try {
 
-          
+
 
 
             // if (res?.status === 200) {

@@ -10,6 +10,7 @@ export const credentialsProvider = CredentialsProvider({
         const { data } = credentials as {
             data: any,
         };
+            console.log(`🚀 ~ file: credentialsProvider.ts ~ line 13 ~ authorize ~ data`, data)
         try {
             // const res = await postSignIn({ email, password })
             const user = { id: '1', name: 'J Smith', email: 'jsmith@example.com', image: '' }
