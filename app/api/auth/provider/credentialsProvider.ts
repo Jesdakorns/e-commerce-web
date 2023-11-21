@@ -24,14 +24,19 @@ export const credentialsProvider = CredentialsProvider({
         console.log(`🚀 ~ file: credentialsProvider.ts ~ line 23 ~ authorize ~ res`, res)
         try {
 
-
-            if (!res.data) return null
+            const isLogin = true
+            if (!isLogin) return null
+            // if (!res.data) return null
 
             const profile = {
-                ...res.data,
+                // ...res.data,
+                id: '1',
+                name: 'dddd',
+                email: 'dddd@gmail.com',
+                image: ''
             }
 
-            return null;
+            return profile;
         } catch (error) {
             return null;
         }
