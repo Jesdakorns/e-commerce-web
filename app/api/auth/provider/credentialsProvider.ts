@@ -7,16 +7,17 @@ export const credentialsProvider = CredentialsProvider({
     name: "credentials",
     credentials: {},
     async authorize(credentials) {
-        const { email, password } = credentials as {
-            email: string,
-            password: string,
+        const { data } = credentials as {
+            data: any,
         };
         try {
+            // const res = await postSignIn({ email, password })
             const user = { id: '1', name: 'J Smith', email: 'jsmith@example.com', image: '' }
 
-            if (user) {
+            console.log(`🚀 ~ file: credentialsProvider.ts ~ line 18 ~ authorize ~ data`, JSON.parse(data))
+            if (data) {
                 // Any object returned will be saved in `user` property of the JWT
-                return user
+                return JSON.parse(data)
             } else {
                 // If you return null or false then the credentials will be rejected
                 return null

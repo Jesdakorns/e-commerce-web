@@ -1,5 +1,5 @@
 import { useAppContext } from '@/context/AppProvider';
-import { postSignUp } from '@/network/api/api';
+import { postSignIn, postSignUp } from '@/network/api/api';
 import { NOTIFICATION_VARIANT } from '@/utils/constants';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -56,24 +56,42 @@ const useAuth = () => {
     }
 
     const onSignIn = handleSubmit(async (params: FromProps) => {
-        const res = await signIn("credentials", {
+        const res = await postSignIn({
             email: params.signIn.email,
             password: params.signIn.password,
-            callbackUrl: '/',
-            redirect: false,
         })
-        console.log(`🚀 ~ file: useAuth.tsx ~ line 66 ~ onSignIn ~ res`, res)
-        try {
-            if (res?.status === 200) {
+        if (res?.httpStatusCode === 201) {
+            const resLogin = await signIn("credentials", {
+                data: JSON.stringify(res?.data),
+                callbackUrl: '/',
+                redirect: false,
+            })
+            if (resLogin?.status === 200) {
                 router.replace("/");
-            } else {
-                dispatch({
-                    toastNotification: {
-                        variant: NOTIFICATION_VARIANT.DANGEROUS,
-                        message: 'Login failed',
-                    },
-                });
             }
+        } else {
+            dispatch({
+                toastNotification: {
+                    variant: NOTIFICATION_VARIANT.DANGEROUS,
+                    message: 'Login failed',
+                },
+            });
+        }
+        try {
+
+          
+
+
+            // if (res?.status === 200) {
+            //     router.replace("/");
+            // } else {
+            //     dispatch({
+            //         toastNotification: {
+            //             variant: NOTIFICATION_VARIANT.DANGEROUS,
+            //             message: 'Login failed',
+            //         },
+            //     });
+            // }
         } catch (err: any) {
             dispatch({
                 toastNotification: {
