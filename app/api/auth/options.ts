@@ -4,7 +4,9 @@ import jwt from 'jsonwebtoken';
 import { credentialsProvider, gitHubProvider, googleProvider } from "./provider";
 import { postSignInGoogle } from "@/network/api/api";
 import { AdapterUser } from "next-auth/adapters";
+import debug from 'debug';
 
+const log = debug('app:auth');
 type TPicture = Profile & {
   picture?: string
 } | undefined
@@ -59,7 +61,7 @@ export const authOptions: NextAuthOptions = {
       return true
     },
     async jwt({ token, user, account, profile }) {
-      console.log(`🚀 ~ file: options.ts ~ line 62 ~ jwt ~ account`, account)
+      log(`🚀 ~ file: options.ts ~ line 62 ~ jwt ~ account`, account)
       if (user) {
         token = { ...user }
       }
@@ -67,7 +69,7 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider === 'google') {
         const _profile: TPicture = profile
         const _user = await postSignInGoogle({ email: _profile?.email || '', name: _profile?.name || '', image: _profile?.picture || '' })
-        console.log('{ ..._user.data }', { ..._user.data })
+        log('{ ..._user.data }', { ..._user.data })
         token.id = _user.data?.id
         token.email = _user.data?.email
         token.name = _user.data?.name

@@ -10,6 +10,7 @@ export async function middleware(req: NextRequest) {
     raw: true,
     cookieName: process.env.NODE_ENV === 'production' ? '__Secure-next-auth.session-token' : 'next-auth.session-token'
   });
+  console.log(`🚀 ~ file: middleware.ts ~ line 13 ~ middleware ~ token`, token)
   if (req.nextUrl.pathname.startsWith("/signin") && token) {
     return NextResponse.redirect(new URL('/', req.url));
   }
