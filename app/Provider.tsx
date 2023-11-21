@@ -9,7 +9,6 @@ interface Props {
 }
 
 const CustomProviders = ({ children }: Props) => {
-  console.log('process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID', process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID)
   return (
     <>
       <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? ''}>

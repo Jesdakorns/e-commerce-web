@@ -54,7 +54,6 @@ const useAuth = () => {
             }).then(res => res.data);
             const res = await postSignInGoogle({ email: userInfo?.email || '', name: userInfo?.name || '', image: userInfo?.picture || '' })
             if (res?.httpStatusCode === 201) {
-                console.log('JSON.stringify(res?.data)', JSON.stringify(res?.data))
                 const resLogin = await signIn("credentials", {
                     data: JSON.stringify(res?.data),
                     callbackUrl: '/',
@@ -64,7 +63,6 @@ const useAuth = () => {
                     router.replace("/");
                 }
             }
-            console.log(userInfo);
         },
     });
 
