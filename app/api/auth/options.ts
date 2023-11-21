@@ -19,9 +19,9 @@ type TUser = User & {
 
 export const authOptions: NextAuthOptions = {
   providers: [
-    googleProvider,
+    // googleProvider,
     credentialsProvider,
-    gitHubProvider
+    // gitHubProvider
   ],
 
   session: {
