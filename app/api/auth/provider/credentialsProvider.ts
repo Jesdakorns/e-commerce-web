@@ -15,12 +15,12 @@ export const credentialsProvider = CredentialsProvider({
         // const res = await postSignIn({ email, password })
         // console.log(`🚀 ~ file: credentialsProvider.ts ~ line 17 ~ authorize ~ res`, res)
         // log('Credentials:', res);
+        console.log(`🚀 ~ file: credentialsProvider.ts ~ line 23 ~ authorize ~ process.env.NEXT_PUBLIC_API_BASE_URL`, process.env.NEXT_PUBLIC_API_BASE_URL)
         const res = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + `/auth/login`, {
             method: "POST",
             body: JSON.stringify({ email, password }),
             headers: { "Content-Type": "application/json" },
         }).then((response) => response.json());
-        console.log(`🚀 ~ file: credentialsProvider.ts ~ line 23 ~ authorize ~ process.env.NEXT_PUBLIC_API_BASE_URL`, process.env.NEXT_PUBLIC_API_BASE_URL)
         console.log(`🚀 ~ file: credentialsProvider.ts ~ line 23 ~ authorize ~ res`, res)
         try {
 
