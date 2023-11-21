@@ -66,18 +66,18 @@ export const authOptions: NextAuthOptions = {
         token = { ...user }
       }
 
-      if (account?.provider === 'google') {
-        const _profile: TPicture = profile
-        const _user = await postSignInGoogle({ email: _profile?.email || '', name: _profile?.name || '', image: _profile?.picture || '' })
-        log('{ ..._user.data }', { ..._user.data })
-        token.id = _user.data?.id
-        token.email = _user.data?.email
-        token.name = _user.data?.name
-        token.image = _user.data?.image
-        token.accessToken = _user.data?.accessToken
-        token.refreshToken = _user.data?.refreshToken
+      // if (account?.provider === 'google') {
+      //   const _profile: TPicture = profile
+      //   const _user = await postSignInGoogle({ email: _profile?.email || '', name: _profile?.name || '', image: _profile?.picture || '' })
+      //   log('{ ..._user.data }', { ..._user.data })
+      //   token.id = _user.data?.id
+      //   token.email = _user.data?.email
+      //   token.name = _user.data?.name
+      //   token.image = _user.data?.image
+      //   token.accessToken = _user.data?.accessToken
+      //   token.refreshToken = _user.data?.refreshToken
 
-      }
+      // }
 
       delete token.picture
       return { ...token };
