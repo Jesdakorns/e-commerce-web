@@ -1,3 +1,4 @@
+import { postSignIn } from "@/network/api/api";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const credentialsProvider = CredentialsProvider({
@@ -5,23 +6,23 @@ export const credentialsProvider = CredentialsProvider({
     credentials: {},
     async authorize(credentials) {
         try {
-            const { email, password, mode } = credentials as {
+            const { email, password } = credentials as {
                 email: string,
                 password: string,
-                mode:string
             };
+            const res = await postSignIn({ email, password })
+            console.log(`🚀 ~ file: credentialsProvider.ts ~ line 14 ~ authorize ~ res`, res)
 
-            const res = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + `/auth/login?mode=${mode}`, {
-                method: "POST",
-                body: JSON.stringify({ email, password }),
-                headers: { "Content-Type": "application/json" },
-            });
+            // const res = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + `/auth/login?mode=${mode}`, {
+            //     method: "POST",
+            //     body: JSON.stringify({ email, password }),
+            //     headers: { "Content-Type": "application/json" },
+            // });
 
-            if (![200, 201].includes(res.status)) return null
+            if (!res.data) return null
 
-            const response = await res.json();
             const profile = {
-                ...response.data,
+                ...res.data,
             }
 
             return profile;

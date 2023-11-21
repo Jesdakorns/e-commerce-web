@@ -59,6 +59,7 @@ export const authOptions: NextAuthOptions = {
       return true
     },
     async jwt({ token, user, account, profile }) {
+      console.log(`🚀 ~ file: options.ts ~ line 62 ~ jwt ~ account`, account)
       if (user) {
         token = { ...user }
       }
