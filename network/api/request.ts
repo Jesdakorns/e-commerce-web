@@ -1,9 +1,6 @@
 import { ApiResponse, create } from 'apisauce';
 
 import { ApiBaseResponse, IResponse } from './response';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/options';
-import Cookies from 'js-cookie';
 import { getAccessToken } from '@/utils/auth';
 
 
@@ -14,7 +11,6 @@ interface IRequest {
   axiosConfig?: object;
   aadToken?: string;
 }
-console.log('process.env.API_BASE_URL', process.env.NEXT_PUBLIC_API_BASE_URL)
 const DEFAULT_API_CONFIG = {
   url: process.env.NEXT_PUBLIC_API_BASE_URL,
   timeout: 180000,
@@ -36,7 +32,7 @@ export const request = async <T>({
   axiosConfig,
 }: IRequest): Promise<IResponse<T>> => {
   // wait back end for reference token
-  const token = getAccessToken();
+  const token = await getAccessToken();
   if (token) {
     Api.setHeader('Authorization', `Bearer ${token}`);
   }
@@ -53,7 +49,6 @@ export const request = async <T>({
   );
 
   const response: ApiResponse<ApiBaseResponse<T>> = await Api[method](url, params, axiosConfig);
-  console.log(`🚀 ~ file: request.ts ~ line 54 ~ response`, response)
   if (response.ok) {
     const responseData = {
       data: response.data?.data,

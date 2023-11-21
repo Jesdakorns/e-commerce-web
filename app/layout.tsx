@@ -25,7 +25,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <ThemeRegistry options={{ key: "mui" }}>
-        <body className={inter.className}>
+        <body className={inter.className} suppressHydrationWarning={true}>
           <CustomProviders>
             <DefaultLayout>
               {children}

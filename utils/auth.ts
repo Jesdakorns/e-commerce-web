@@ -1,28 +1,19 @@
-import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode';
-const jwt = require('jsonwebtoken');
-import { JWT } from 'next-auth/jwt';
+import { Session } from 'next-auth';
+import { getSession } from 'next-auth/react';
 
-interface IToken {
-    accountToken: string
-    email: string
-    exp: number
-    iat: number
-    id: string
-    image: string
-    name: string
-    picture: string
-    sub: string
-}
+type TSession = Session & {
+    user?: {
+        accessToken?: string | null
+    }
+} | null
 
-export const getAccessToken = () => {
-    // If tokenFromUrl exists, Website is currently opened in WebView of mobile app
+
+export const getAccessToken = async () => {
     try {
-        const jwtToken = Cookies.get('next-auth.session-token')
+        const session: TSession = await getSession()
         let accountToken = ''
-        if (jwtToken) {
-            const decoded: IToken = jwtDecode(jwtToken)
-            accountToken = decoded.accountToken
+        if (session?.user?.accessToken) {
+            accountToken = session?.user?.accessToken as string
         }
         return accountToken
 

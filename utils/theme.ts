@@ -5,10 +5,10 @@ import { themeColor } from "./themeColor";
 
 export const screen = {
   xs: 0,
-  sm: 700,
-  md: 1200,
-  lg: 1920,
-  xl: 2560
+  sm: 600,
+  md: 900,
+  lg: 1200,
+  xl: 1920
 };
 
 export const themeMui = createTheme({

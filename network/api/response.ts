@@ -31,12 +31,16 @@ export interface AuthData {
   accessToken: string;
 }
 
+export interface IMe {
+}
+
 export interface ISignInRes {
   id: string
   name: string
   email: string
+  image: string
   accessToken: string
-  // refreshToken: string
+  refreshToken: string
 }
 
 export interface ISignIn {
@@ -44,10 +48,27 @@ export interface ISignIn {
   password: string
 }
 
+export interface ISignInGoogle {
+  email: string
+  name: string
+  image: string
+}
+
 export interface ISignUp {
   email: string
   password: string
   phone: string
   gender: string
+}
+
+
+export interface IProductType {
+  id: number;
+  title_en: string;
+  title_th: string;
+  image: string;
+  remove: boolean;
+  created_at: Date;
+  updated_at: Date;
 }
 

@@ -1,7 +1,19 @@
-import { NextAuthOptions, Session } from "next-auth";
+import { NextAuthOptions, Profile, Session, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import jwt from 'jsonwebtoken';
 import { credentialsProvider, gitHubProvider, googleProvider } from "./provider";
+import { postSignInGoogle } from "@/network/api/api";
+import { AdapterUser } from "next-auth/adapters";
+
+type TPicture = Profile & {
+  picture?: string
+} | undefined
+
+type TUser = User & {
+  accessToken: string
+  refreshToken: string
+} | AdapterUser
+
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -21,7 +33,6 @@ export const authOptions: NextAuthOptions = {
   jwt: {
     secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
     encode: ({ secret, token }) => {
-      console.log(`🚀 ~ file: options.ts ~ line 24 ~ token`, token)
       const encodedToken = jwt.sign(
         {
           ...token,
@@ -39,6 +50,7 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ account, profile }) {
+      const _profile: TPicture = profile
       if (account?.provider === "google") {
         return true
       } else if (account?.provider === "github") {
@@ -46,7 +58,28 @@ export const authOptions: NextAuthOptions = {
       }
       return true
     },
-    async session({ session, token, user }) {
+    async jwt({ token, user, account, profile }) {
+      if (user) {
+        token = { ...user }
+      }
+
+      if (account?.provider === 'google') {
+        const _profile: TPicture = profile
+        const _user = await postSignInGoogle({ email: _profile?.email || '', name: _profile?.name || '', image: _profile?.picture || '' })
+        console.log('{ ..._user.data }', { ..._user.data })
+        token.id = _user.data?.id
+        token.email = _user.data?.email
+        token.name = _user.data?.name
+        token.image = _user.data?.image
+        token.accessToken = _user.data?.accessToken
+        token.refreshToken = _user.data?.refreshToken
+
+      }
+
+      delete token.picture
+      return { ...token };
+    },
+    async session({ session, token }) {
       const sanitizedToken = Object.keys(token).reduce((p, c) => {
         if (
           c !== "iat" &&
@@ -61,11 +94,9 @@ export const authOptions: NextAuthOptions = {
           return p
         }
       }, {})
-      return Promise.resolve({ ...session, user: sanitizedToken }) 
+      return Promise.resolve({ ...session, user: sanitizedToken })
     },
-    async jwt({ token, user, account, profile }) {
-      return { ...token, ...user };
-    }
+
   },
   debug: false
 };

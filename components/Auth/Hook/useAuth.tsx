@@ -38,16 +38,21 @@ const useAuth = () => {
         }
     })
     const { resetField, handleSubmit } = methods
-    const [, dispatch] = useAppContext();
+    const [{ user }, dispatch] = useAppContext();
     const router = useRouter()
     const [isMode, setIsMode] = useState(false)
 
 
     const onSignGoogle = async () => {
         const res = await signIn('google', {
-            redirect: true,
+            redirect: false,
             callbackUrl: '/'
         });
+        // const res = await signIn("credentials", {
+        //     mode: 'google',
+        //     callbackUrl: '/',
+        //     redirect: false,
+        // })
     }
 
     const onSignIn = handleSubmit(async (params: FromProps) => {
@@ -87,6 +92,15 @@ const useAuth = () => {
             if (httpStatusCode === 201) {
                 setIsMode(false)
                 resetField("signUp")
+                const res = await signIn("credentials", {
+                    email,
+                    password,
+                    callbackUrl: '/',
+                    redirect: false,
+                })
+                if (res?.status === 200) {
+                    router.replace("/");
+                }
             }
 
         } catch (err: any) {

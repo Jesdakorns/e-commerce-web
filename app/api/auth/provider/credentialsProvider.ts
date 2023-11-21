@@ -5,12 +5,13 @@ export const credentialsProvider = CredentialsProvider({
     credentials: {},
     async authorize(credentials) {
         try {
-            const { email, password } = credentials as {
+            const { email, password, mode } = credentials as {
                 email: string,
                 password: string,
+                mode:string
             };
 
-            const res = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + "/auth/login", {
+            const res = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + `/auth/login?mode=${mode}`, {
                 method: "POST",
                 body: JSON.stringify({ email, password }),
                 headers: { "Content-Type": "application/json" },

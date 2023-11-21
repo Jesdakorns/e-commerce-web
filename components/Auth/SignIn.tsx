@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, Typography } from '@mui/material'
+import { Box, Divider, Grid, IconButton, InputAdornment, Typography } from '@mui/material'
 import { motion } from 'framer-motion'
 import React from 'react'
 import TextFieldForm from '@/components/Input/TextField'
@@ -9,6 +9,7 @@ import { PATTERN } from '@/utils'
 import { RULES } from '@/utils/rules'
 import { themeColor } from '@/utils/themeColor'
 import ButtonAuthSocial from './ButtonAuthSocial'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
 interface Props {
     isShow?: boolean
@@ -18,6 +19,16 @@ interface Props {
 }
 
 const SignIn = ({ isShow = true, onSignIn, ...props }: Props) => {
+
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+
+
     return (
         <motion.div
             style={{ width: '100%' }}
@@ -39,9 +50,25 @@ const SignIn = ({ isShow = true, onSignIn, ...props }: Props) => {
                 <TextFieldForm type="text" name="signIn.email" placeholder="Email Address" fullWidth autoComplete="off" rules={{
                     required: !isShow, pattern: RULES.PATTERN.EMAIL
                 }} />
-                <TextFieldForm type="password" name="signIn.password" placeholder="Password" fullWidth autoComplete="off" rules={{
+                <TextFieldForm type={showPassword ? 'text' : 'password'} name="signIn.password" placeholder="Password" fullWidth autoComplete="off" rules={{
                     required: !isShow
-                }} />
+                }}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }}
+
+                />
                 <ButtonCT
                     type="submit"
                     fullWidth

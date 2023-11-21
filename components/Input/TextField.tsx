@@ -1,10 +1,9 @@
-import { Box, StandardTextFieldProps, TextField, styled } from '@mui/material';
+import { BaseTextFieldProps, Box, StandardTextFieldProps, TextField, styled } from '@mui/material';
 import React from 'react';
 import { Control, Controller, FieldPath, RegisterOptions } from 'react-hook-form';
 import { MessengerTextField } from './MessengerTextField';
 import { PATTERN } from '@/utils';
 import { IMaskInput } from 'react-imask';
-
 
 
 export const CustomTextField = styled(TextField)(({ size }) => ({
@@ -137,6 +136,7 @@ const TextFieldForm = <FieldValue extends Record<string, any>>({
                         />
                     ) : (
                         <CustomTextField
+                            fullWidth
                             autoComplete="off"
                             onChange={(e) => {
                                 let output = changeTextFormType(e.target.value);

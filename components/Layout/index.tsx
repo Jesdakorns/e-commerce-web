@@ -62,7 +62,6 @@ function ScrollTop({ children, window }: Props) {
 
 export default function DefaultLayout(props: Props) {
     const matchesMobile = useMediaQuery(themeMui.breakpoints.down('md'));
-    console.log(`🚀 ~ file: index.tsx ~ line 64 ~ BackToTop ~ matches`, matchesMobile)
     const pathname = usePathname()
     const [first, setValue] = useState(0)
     const isPathSignin = pathname === '/signin'
