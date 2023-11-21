@@ -99,5 +99,5 @@ export const authOptions: NextAuthOptions = {
     },
 
   },
-  debug: false
+  debug: true
 };
