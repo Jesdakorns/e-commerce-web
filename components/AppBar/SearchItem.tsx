@@ -16,8 +16,6 @@ const SearchItem = () => {
     }
 
     const handleSubmitSearch = async (data: FieldValues) => {
-    console.log(`🚀 ~ file: SearchItem.tsx ~ line 19 ~ handleSubmitSearch ~ data`, data)
-
     }
     return (
         <>
