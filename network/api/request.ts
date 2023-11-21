@@ -22,6 +22,7 @@ const Api = create({
   headers: {
     Accept: 'application/json',
     credentials: true,
+    'Access-Control-Allow-Origin' : '*',
   },
 });
 
