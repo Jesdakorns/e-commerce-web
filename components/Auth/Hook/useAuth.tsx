@@ -56,13 +56,14 @@ const useAuth = () => {
     }
 
     const onSignIn = handleSubmit(async (params: FromProps) => {
+        const res = await signIn("credentials", {
+            email: params.signIn.email,
+            password: params.signIn.password,
+            callbackUrl: '/',
+            redirect: false,
+        })
+        console.log(`🚀 ~ file: useAuth.tsx ~ line 66 ~ onSignIn ~ res`, res)
         try {
-            const res = await signIn("credentials", {
-                email: params.signIn.email,
-                password: params.signIn.password,
-                callbackUrl: '/',
-                redirect: false,
-            })
             if (res?.status === 200) {
                 router.replace("/");
             } else {
