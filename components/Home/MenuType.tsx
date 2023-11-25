@@ -10,6 +10,9 @@ import { Box, Skeleton, Typography, useMediaQuery } from '@mui/material';
 import { themeMui } from '@/utils/theme';
 import { getProductType } from '@/network/api/api';
 import { IProductType } from '@/network/api/response';
+import { AppDispatch, useAppSelector } from '@/store';
+import { useDispatch } from 'react-redux';
+import { productTypeStore } from '@/store/actions';
 
 // const items = [
 //     {
@@ -84,25 +87,14 @@ import { IProductType } from '@/network/api/response';
 
 
 const MenuType = () => {
+    const productType = useAppSelector((state) => state.productType)
+    const dispatch = useDispatch<AppDispatch>()
     const mediaIpad = useMediaQuery(themeMui.breakpoints.down('md'))
     const mediaMobile = useMediaQuery(themeMui.breakpoints.down('sm'))
-    const [items, setItems] = useState<IProductType[] | []>([])
-    const [loading, setLoading] = useState(true)
-
-    const feastData = async () => {
-        setLoading(true)
-        try {
-            const res = await getProductType()
-            setItems(res?.data ?? [])
-        } catch (error) {
-
-        } finally {
-            setLoading(false)
-        }
-    }
 
     useEffect(() => {
-        feastData()
+        if(productType.isSetData) return 
+        dispatch(productTypeStore())
     }, [])
 
 
@@ -127,14 +119,14 @@ const MenuType = () => {
                     modules={[Grid]}
                     className="menu-type-swiper"
                 >
-                    {loading
+                    {productType.loading
                         ? (
                             Array.from(Array(10)).map((_, idx) => <SwiperSlide key={idx} style={{ borderRadius: '10px', }}>
                                 <Skeleton variant="rectangular" width={'100%'} height={'100%'} sx={{ borderRadius: '10px' }} />
                             </SwiperSlide>)
                         )
                         : (
-                            items.map((val, idx) => {
+                            productType.data.map((val, idx) => {
                                 return (
                                     <SwiperSlide key={idx} style={{ borderRadius: '10px', }}>
                                         <StyledBoxItem>

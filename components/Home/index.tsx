@@ -21,10 +21,15 @@ import 'swiper/css/pagination';
 // import required modules
 import { Autoplay, Navigation, Grid, Pagination } from 'swiper/modules';
 import MenuType from "./MenuType";
+import Loadable from 'react-loadable';
 import Promotion from "./Promotion";
+// const Promotion = lazy(() => import('./Promotion'))
 import BestSellingProducts from "./BestSellingProducts";
 import ProductList from "./ProductList";
-
+// const Promotion = Loadable({
+//   loader: () => import('./Promotion'),
+//   loading:() => (<>loading...</>),
+// });
 
 const Home = () => {
   const [{ user }] = useAppContext()
@@ -33,6 +38,7 @@ const Home = () => {
       <Container maxWidth='lg'>
 
         <Box display='flex' flexDirection='column' gap={3}>
+          
           <Promotion />
           <MenuType />
           {/* <MenuType /> */}

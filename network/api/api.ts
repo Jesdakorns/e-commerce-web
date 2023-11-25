@@ -1,5 +1,5 @@
 import { request } from './request';
-import { IMe, IProductType, ISignIn, ISignInGoogle, ISignInRes, ISignUp } from './response';
+import { IMe, IProductType, IPromotion, IPromotions, ISignIn, ISignInGoogle, ISignInRes, ISignUp } from './response';
 
 export const getMe = () =>
   request<IMe>({
@@ -29,5 +29,11 @@ export const getProductType = () =>
   request<IProductType[]>({
     method: 'get',
     url: '/productType',
+  });
+
+export const getPromotion = () =>
+  request<IPromotions>({
+    method: 'get',
+    url: '/promotion',
   });
 

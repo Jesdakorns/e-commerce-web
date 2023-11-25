@@ -11,6 +11,8 @@ import { themeColor } from '@/utils/themeColor'
 import ButtonAuthSocial from './ButtonAuthSocial'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { UseGoogleLoginOptionsAuthCodeFlow } from '@react-oauth/google'
+import ButtonLoadingCT from '../Button/ButtonLoading'
+import { useFormContext } from 'react-hook-form'
 
 interface Props {
     isShow?: boolean
@@ -20,7 +22,7 @@ interface Props {
 }
 
 const SignIn = ({ isShow = true, onSignIn, ...props }: Props) => {
-
+    const { formState: { isSubmitting } } = useFormContext()
     const [showPassword, setShowPassword] = React.useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -70,7 +72,8 @@ const SignIn = ({ isShow = true, onSignIn, ...props }: Props) => {
                     }}
 
                 />
-                <ButtonCT
+                <ButtonLoadingCT
+                    loading={isSubmitting}
                     type="submit"
                     fullWidth
                     variant="contained"
@@ -78,7 +81,7 @@ const SignIn = ({ isShow = true, onSignIn, ...props }: Props) => {
                     sx={{ mt: 3, mb: 2 }}
                 >
                     Sign In
-                </ButtonCT>
+                </ButtonLoadingCT>
             </Box>
             <ButtonAuthSocial {...props} />
         </motion.div>

@@ -1,6 +1,5 @@
 "use client";
 import { IToastNotification } from '@/components/Toast';
-import { NOTIFICATION_VARIANT } from '@/utils/constants';
 import { useSession } from 'next-auth/react';
 import React, { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
 

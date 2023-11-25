@@ -72,3 +72,22 @@ export interface IProductType {
   updated_at: Date;
 }
 
+
+
+
+export interface IPromotion {
+  id: number;
+  title_en: string;
+  title_th: string;
+  image: string;
+  remove: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
+
+
+export interface IPromotions {
+  promotion?: IPromotion[] | []
+  promotionSub?: IPromotion[] | []
+}
+
