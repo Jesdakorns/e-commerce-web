@@ -91,6 +91,9 @@ const MenuType = () => {
     const dispatch = useDispatch<AppDispatch>()
     const mediaIpad = useMediaQuery(themeMui.breakpoints.down('md'))
     const mediaMobile = useMediaQuery(themeMui.breakpoints.down('sm'))
+    const [items, setItems] = useState<IProductType[] | []>([])
+    const [loading, setLoading] = useState(true)
+
 
     useEffect(() => {
         if(productType.isSetData) return 
@@ -104,7 +107,7 @@ const MenuType = () => {
             <Box height={{ xs: 350, sm: 350, md: 350 }} sx={{
                 background: '#f6f6f6c2',
                 '& .swiper-grid-column > .swiper-wrapper': {
-                    justifyContent: `center`
+                    justifyContent: `flex-start`,
                 }
             }} px={3} py={2}>
                 <Swiper
@@ -112,7 +115,7 @@ const MenuType = () => {
                     grid={{
                         rows: 2,
                     }}
-                    spaceBetween={10}
+                    spaceBetween={22}
                     pagination={{
                         clickable: false,
                     }}
@@ -130,7 +133,7 @@ const MenuType = () => {
                                 return (
                                     <SwiperSlide key={idx} style={{ borderRadius: '10px', }}>
                                         <StyledBoxItem>
-                                            <Box component="div" className="img" sx={{ background: `url("${val.image}")` }}></Box>
+                                            <Box component="div" className="img" sx={{ background: `url("${[process.env.NEXT_PUBLIC_API_BASE_URL, val.image].filter(val => val).join('/')}")` }}></Box>
                                             <p>{val.title_th}</p>
                                         </StyledBoxItem>
                                     </SwiperSlide>
@@ -159,6 +162,7 @@ const StyledBoxItem = styled(Box)(({ theme }) => ({
     flexDirection: 'column',
     cursor: 'pointer',
     backgroundColor: '#ffff',
+    userSelect:'none',
     '&:hover': {
         boxShadow: `0px 2px 14px -9px ${theme.palette.primary.main}`,
         backgroundColor: '#fff',
