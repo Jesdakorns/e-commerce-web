@@ -1,7 +1,7 @@
 import { Button, ButtonProps, styled } from "@mui/material";
 import React from "react";
-import LoadingButton from '@mui/lab/LoadingButton';
-type Props = ButtonProps;
+import LoadingButton, { LoadingButtonProps } from '@mui/lab/LoadingButton';
+type Props = LoadingButtonProps;
 
 const CustomButton = styled(LoadingButton)(({ variant, size }) => ({
   height: size === 'large' ? 51 : size === 'medium' ? 42 : 38,
