@@ -13,6 +13,7 @@ import { IProductType } from '@/network/api/response';
 import { AppDispatch, useAppSelector } from '@/store';
 import { useDispatch } from 'react-redux';
 import { productTypeStore } from '@/store/actions';
+import { useRouter } from 'next/navigation';
 
 // const items = [
 //     {
@@ -87,16 +88,14 @@ import { productTypeStore } from '@/store/actions';
 
 
 const MenuType = () => {
+    const router = useRouter()
     const productType = useAppSelector((state) => state.productType)
     const dispatch = useDispatch<AppDispatch>()
     const mediaIpad = useMediaQuery(themeMui.breakpoints.down('md'))
     const mediaMobile = useMediaQuery(themeMui.breakpoints.down('sm'))
-    const [items, setItems] = useState<IProductType[] | []>([])
-    const [loading, setLoading] = useState(true)
-
 
     useEffect(() => {
-        if(productType.isSetData) return 
+        if (productType.isSetData) return
         dispatch(productTypeStore())
     }, [])
 
@@ -132,7 +131,7 @@ const MenuType = () => {
                             productType.data.map((val, idx) => {
                                 return (
                                     <SwiperSlide key={idx} style={{ borderRadius: '10px', }}>
-                                        <StyledBoxItem>
+                                        <StyledBoxItem onClick={() => router.push(`/search?s=${val.title_th}`)}>
                                             <Box component="div" className="img" sx={{ background: `url("${[process.env.NEXT_PUBLIC_API_BASE_URL, val.image].filter(val => val).join('/')}")` }}></Box>
                                             <p>{val.title_th}</p>
                                         </StyledBoxItem>
@@ -162,7 +161,7 @@ const StyledBoxItem = styled(Box)(({ theme }) => ({
     flexDirection: 'column',
     cursor: 'pointer',
     backgroundColor: '#ffff',
-    userSelect:'none',
+    userSelect: 'none',
     '&:hover': {
         boxShadow: `0px 2px 14px -9px ${theme.palette.primary.main}`,
         backgroundColor: '#fff',

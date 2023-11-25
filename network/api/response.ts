@@ -77,10 +77,10 @@ export interface IProductType {
 
 export interface IPromotion {
   id: number;
-  title_en: string;
-  title_th: string;
+  url: string;
   image: string;
   remove: boolean;
+  isSelect: boolean;
   created_at: Date;
   updated_at: Date;
 }

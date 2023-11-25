@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Grid, Pagination } from 'swiper/modules';
 import { AppDispatch, useAppSelector } from '@/store';
 import { useDispatch } from 'react-redux';
-import {  promotionsStore } from '@/store/actions';
+import { promotionsStore } from '@/store/actions';
 
 const Promotion = () => {
     const promotion = useAppSelector((state) => state.promotion);
@@ -35,6 +35,7 @@ const Promotion = () => {
                             return (
                                 <SwiperSlide key={idx} style={{ display: 'flex' }}>
                                     <Box
+                                        onClick={() => { window.open(val.url, '_back') }}
                                         alt='main promotion image'
                                         sx={{ width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '25/7' }}
                                         component='img'
@@ -58,6 +59,7 @@ const Promotion = () => {
                     promotion?.promotionSub?.map((val) => {
                         return (
                             <Box
+                                onClick={() => { window.open(val.url, '_back') }}
                                 key={val.id}
                                 sx={{ width: { xs: '100%', sm: 'calc(50% - 4px)', md: '100%' }, height: '100%', borderRadius: '10px', objectFit: 'cover', aspectRatio: '35/7' }}
                                 component='img'
