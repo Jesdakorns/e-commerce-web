@@ -59,9 +59,11 @@ export const productsStore = ({ val, limit = 12, page = 1, max = 100 }: { val?: 
    let nextPage = null
    try {
       const res = await getProducts({ limit, page })
-      data = val?.length ? { ...res.data, data: [...val, ...res.data.data] } : res.data
-      isSetData = true
-      nextPage = data.nextPage
+      if (res?.data) {
+         data = val?.length ? { ...res.data, data: [...val, ...res?.data?.data] } : res.data
+         isSetData = true
+         nextPage = data.nextPage
+      }
    } catch (error) {
 
    } finally {

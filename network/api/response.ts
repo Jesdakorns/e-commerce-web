@@ -15,7 +15,7 @@ export interface IResponse<T> {
   status?: string;
   httpStatusCode?: number;
   problem?: PROBLEM_CODE;
-  data: T;
+  data?: T;
 }
 
 export interface Status {
