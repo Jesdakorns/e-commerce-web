@@ -1,5 +1,5 @@
 import { request } from './request';
-import { IMe, IProductType, IPromotion, IPromotions, ISignIn, ISignInGoogle, ISignInRes, ISignUp } from './response';
+import { IMe, IPagination, IParamsProducts, IProductType, IProducts, IPromotion, IPromotions, ISignIn, ISignInGoogle, ISignInRes, ISignUp } from './response';
 
 export const getMe = () =>
   request<IMe>({
@@ -12,11 +12,11 @@ export const postSignIn = ({ email, password }: ISignIn) =>
     url: '/auth/login',
     params: { email, password },
   });
-export const postSignInGoogle = ({ email, name, image }: ISignInGoogle) =>
+export const postSignInGoogle = ({ accessToken }: ISignInGoogle) =>
   request<ISignInRes>({
     method: 'post',
     url: '/auth/login/google',
-    params: { email, name, image },
+    params: { accessToken },
   });
 export const postSignUp = ({ email, password, phone, gender }: ISignUp) =>
   request({
@@ -35,5 +35,13 @@ export const getPromotion = () =>
   request<IPromotions>({
     method: 'get',
     url: '/promotion',
+  });
+
+
+export const getProducts = ({ limit, page }: IParamsProducts) =>
+  request<IPagination<IProducts[]>>({
+    method: 'get',
+    url: '/product',
+    params: { limit ,page},
   });
 

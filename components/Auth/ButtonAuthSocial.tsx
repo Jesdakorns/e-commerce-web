@@ -25,7 +25,7 @@ const ButtonAuthSocial = ({ onClick, onSignUp, onSignInGoogle }: Props) => {
                 </Grid>
             </Grid>
             <Divider sx={{ my: 3 }} flexItem >or</Divider>
-            <ButtonCT fullWidth variant="contained" color='info' size="large" sx={{ mb: 2 }} onClick={() => onSignInGoogle?.()} startIcon={<Box className="login-with-google-btn "></Box>} >Sign in with Google</ButtonCT>
+            <ButtonCT fullWidth variant="contained" color='info' size="large" sx={{ mb: 2 }} onClick={() => {onSignInGoogle?.()}} startIcon={<Box className="login-with-google-btn "></Box>} >Sign in with Google</ButtonCT>
             {/* <ButtonCT fullWidth variant="contained" color='info' size="large" onClick={() => submitSignIn('github')} startIcon={<IoLogoGithub style={{ color: `#636363` }} />}>Sign in with GitHub</ButtonCT> */}
         </>
     )

@@ -1,6 +1,6 @@
 'use client'
 import { BottomNavigation, Box, BottomNavigationAction, styled, useMediaQuery, Badge } from '@mui/material';
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form';
 import { TFrom } from '.';
 import { themeMui } from '@/utils/theme';
@@ -18,12 +18,10 @@ const NavMenu = () => {
     const pathname = usePathname()
     const matchesMobile = useMediaQuery(themeMui.breakpoints.down('md'));
     const { watch, setValue } = useFormContext<TFrom>()
-    const navMenu = watch('navMenu')
     const [menuSelect, setMenuSelect] = useState<number | undefined>()
-    const r = useRef()
     const handleClickMenu = (event: React.SyntheticEvent<Element, Event>, val: number) => {
         const url = event.currentTarget.getAttribute('data-url')
-        if (url) {
+        if (!url?.includes('/search')) {
             setMenuSelect(val)
             router.push(url || '')
             return
@@ -41,10 +39,10 @@ const NavMenu = () => {
                 setMenuSelect(+(idx ?? 0))
             }
         }
-    }, [])
+    }, [pathname])
 
     return (
-        <Box width='100%' display='flex' justifyContent='space-around' ref={r}>
+        <Box width='100%' display='flex' justifyContent='space-around'>
             <StyledBottomNavigation showLabels
                 sx={{ width: { xs: '100%', md: '420px' } }}
                 onChange={handleClickMenu}
@@ -64,6 +62,7 @@ const NavMenu = () => {
                 />
                 <StyledBottomNavigationAction
                     data-index='2'
+                    data-url="/search"
                     label='Search'
                     icon={<IoSearchSharp />}
                 />

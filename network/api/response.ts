@@ -15,7 +15,7 @@ export interface IResponse<T> {
   status?: string;
   httpStatusCode?: number;
   problem?: PROBLEM_CODE;
-  data?: T;
+  data: T;
 }
 
 export interface Status {
@@ -49,9 +49,7 @@ export interface ISignIn {
 }
 
 export interface ISignInGoogle {
-  email: string
-  name: string
-  image: string
+  accessToken: string
 }
 
 export interface ISignUp {
@@ -64,12 +62,12 @@ export interface ISignUp {
 
 export interface IProductType {
   id: number;
-  title_en: string;
-  title_th: string;
+  titleEn: string;
+  titleTh: string;
   image: string;
   remove: boolean;
-  created_at: Date;
-  updated_at: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 
@@ -89,5 +87,32 @@ export interface IPromotion {
 export interface IPromotions {
   promotion?: IPromotion[] | []
   promotionSub?: IPromotion[] | []
+}
+
+
+export interface IProducts {
+  id: number;
+  title: number;
+  description: string;
+  price: number;
+  coverPhoto: string[];
+  stockQuantity: number;
+  salesAmount: number;
+  remove: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IParamsProducts {
+  limit: number
+  page: number
+}
+
+
+export interface IPagination<T> {
+  data: T
+  total: number,
+  nextPage: number | null,
+  prevPage: number | null
 }
 

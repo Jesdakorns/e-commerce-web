@@ -6,21 +6,16 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Fab from '@mui/material/Fab';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import Fade from '@mui/material/Fade';
 import Logo from '@/src/assets/images/logo_main.png';
 import Image from "next/image";
 import { styled } from '@mui/system';
-import { Avatar, Badge, BottomNavigation, BottomNavigationAction, Dialog, DialogContent, Divider, DialogTitle, Grid, IconButton, InputAdornment, ListItemIcon, ListItemText, Menu, MenuItem, Slide, SxProps, Tooltip, useMediaQuery } from '@mui/material';
-import { IoAddOutline, IoCartSharp, IoChatbubbleSharp, IoChevronBack, IoChevronForward, IoHome, IoLogOutOutline, IoPerson, IoSearchOutline, IoSearchSharp, IoSettingsOutline } from 'react-icons/io5';
+import { Avatar, Badge, Divider,IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Slide, SxProps, Tooltip } from '@mui/material';
+import { IoAddOutline, IoCartSharp, IoChatbubbleSharp, IoChevronBack, IoChevronForward, IoHome, IoLogOutOutline, IoSearchSharp, IoSettingsOutline } from 'react-icons/io5';
 import { useRouter, usePathname, useParams } from 'next/navigation';
-import { themeMui } from '@/utils/theme';
 import { useAppContext } from '@/context/AppProvider';
 import { signOut } from 'next-auth/react';
 import { CSSTransition } from 'react-transition-group';
 import { stringToColor } from '@/utils/function';
-import TextFieldForm from '../Input/TextField';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TransitionProps } from '@mui/material/transitions';
 import SearchItem from './SearchItem';
@@ -66,7 +61,7 @@ export default function AppBarUI(props: Props) {
             },
         }
     })
-    const { setValue } = methods
+    const { } = methods
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const [activeMenuTable, setActiveMenuTable] = useState('main');
     const [menuHeight, setMenuHeight] = useState<number | null | undefined>(dropdownRef?.current?.offsetHeight);
@@ -83,7 +78,7 @@ export default function AppBarUI(props: Props) {
 
     const [menuApp, setMenuApp] = useState<TMenuApp[]>([])
     const [menu, setMenu] = useState<Menu[]>([])
-  
+
 
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -109,7 +104,6 @@ export default function AppBarUI(props: Props) {
                     break;
             }
         }
-        // setAnchorEl(null);
     };
     const handleMenuSub = (e: React.MouseEvent<HTMLElement>) => {
         let { route } = e.currentTarget.dataset
@@ -118,11 +112,7 @@ export default function AppBarUI(props: Props) {
             console.log('menu.find(val => val.route === activeMenuTable)', selectMenu)
             setSelectMenuSub(selectMenu?.menuSub?.find(val => val.route === route))
         }
-        // setAnchorEl(null);
     };
-
-
-
 
     const stringAvatar = (name: string, image: string, sx?: SxProps) => {
         return {
@@ -132,7 +122,8 @@ export default function AppBarUI(props: Props) {
                 ...sx
             },
             children: name ? [name?.split(' ')?.[0]?.[0], name?.split(' ')?.[1]?.[0]].join('') : undefined,
-            src: image
+            src: image,
+            name: 'AccountSettings'
         };
     }
     const calcHeight = (el: any) => {
@@ -201,28 +192,6 @@ export default function AppBarUI(props: Props) {
         ])
     }, [user])
 
-
-    // useEffect(() => {
-    //     setValue(menuPage.findIndex(val => val === pathname))
-    //     // setTimeout(() => {
-    //     //     if (dropdownRef?.current?.offsetHeight) {
-    //     //         console.log('dropdownRef?.current?.offsetHeight', dropdownRef?.current?.offsetHeight)
-    //     //         setMenuHeight(dropdownRef?.current?.offsetHeight)
-    //     //     }
-    //     // }, 0);
-    // }, [])
-
-    const Transition = React.forwardRef(function Transition(
-        props: TransitionProps & {
-            children: React.ReactElement<any, any>;
-        },
-        ref: React.Ref<unknown>,
-    ) {
-        return <Slide direction="down" ref={ref} {...props} />;
-    });
-
-
-
     return (
         <>
             <FormProvider {...methods}>
@@ -241,7 +210,7 @@ export default function AppBarUI(props: Props) {
                                     <NavMenu />
                                     <StyledBoxRight component="div" display={{ xs: 'none', md: 'flex' }}>
                                         <Box>
-                                            <Tooltip title="Account settings">
+                                            <Tooltip title="Account Settings">
                                                 <IconButton
                                                     onClick={handleClick}
                                                     size="small"
@@ -249,8 +218,9 @@ export default function AppBarUI(props: Props) {
                                                     aria-controls={open ? 'account-menu' : undefined}
                                                     aria-haspopup="true"
                                                     aria-expanded={open ? 'true' : undefined}
+                                                    aria-label='Account Settings'
                                                 >
-                                                    <Avatar {...stringAvatar(user?.name ?? '', user?.image ?? '')} alt='avatar image'></Avatar>
+                                                    <Avatar {...stringAvatar(user?.name ?? '', user?.image ?? '')} alt='Account Settings' ></Avatar>
                                                 </IconButton>
                                             </Tooltip>
                                             <Menu

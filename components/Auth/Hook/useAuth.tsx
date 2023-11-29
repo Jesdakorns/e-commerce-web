@@ -4,11 +4,10 @@ import { useAppContext } from '@/context/AppProvider';
 import { postSignIn, postSignInGoogle, postSignUp } from '@/network/api/api';
 import { NOTIFICATION_VARIANT } from '@/utils/constants';
 import { useGoogleLogin } from '@react-oauth/google';
-import axios from 'axios';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react'
-import { FieldValue, UseFormReturn, useForm } from 'react-hook-form';
+import { useState } from 'react'
+import { useForm } from 'react-hook-form';
 
 export interface FromProps {
     signIn: {
@@ -52,10 +51,7 @@ const useAuth = () => {
     const onSignGoogle = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
             try {
-                const userInfo = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
-                    headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
-                }).then(res => res.data);
-                const res = await postSignInGoogle({ email: userInfo?.email || '', name: userInfo?.name || '', image: userInfo?.picture || '' })
+                const res = await postSignInGoogle({ accessToken: tokenResponse.access_token })
                 if (res?.httpStatusCode === 201) {
                     const resLogin = await signIn("credentials", {
                         data: JSON.stringify(res?.data),

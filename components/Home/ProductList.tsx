@@ -1,7 +1,14 @@
-import { Box, Divider, Typography, Grid } from '@mui/material'
-import React from 'react'
+import { Box, Divider, Typography, Grid, Skeleton } from '@mui/material'
+import React, { useEffect, useRef, useState } from 'react'
 import { styled } from '@mui/system';
-
+import { AppDispatch, useAppSelector } from '@/store';
+import { useDispatch } from 'react-redux';
+import { productsStore } from '@/store/actions';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import ButtonCT from '../Button/Button';
+import { useRouter } from 'next/navigation';
+import { gsap } from "gsap";
+import store from 'store2';
 
 const items = [
   {
@@ -64,26 +71,90 @@ const items = [
   },
 ];
 
+const LoadingProduct = () => {
+  return (
+    <Box>
+      <Grid container spacing={2}>
+        {Array.from(Array(4)).map((val, idx) =>
+          <Grid key={idx} item xs={6} sm={4} md={3} lg={2}>
+            <StyledBoxItem>
+              <Box width={'100%'} p={2}>
+                <Skeleton variant="rectangular" className="img" />
+              </Box>
+              <Box component='p'><Skeleton variant="text" /></Box>
+
+            </StyledBoxItem>
+          </Grid>
+        )}
+      </Grid>
+    </Box>
+  )
+}
+
 const ProductList = () => {
+  const products = useAppSelector((state) => state.products)
+  const dispatch = useDispatch<AppDispatch>()
+  const router = useRouter()
+  const refProduct = useRef<any[]>([]);
+  const [position, setPosition] = useState(0)
+
+  const fetchMoreData = () => {
+    // setTimeout(() => {
+      setPosition(products.data.data.length)
+      try {
+        dispatch(productsStore({ val: products.data.data, page: products.data.nextPage ?? 1, max: 24 }))
+      } catch (error) {
+
+      }
+    // }, 2000);
+  };
+
+  useEffect(() => {
+    if (products.isSetData) return
+    dispatch(productsStore({}))
+    store.session.remove("hasMore")
+  }, [])
+
+  useEffect(() => {
+    if (store.session.get('hasMore')) return
+    const el = refProduct.current.filter((val, idx) => (idx >= position) && val)
+    gsap.fromTo(el, {
+      opacity: 0,
+      scale: 0,
+      duration: 0,
+    }, { opacity: 1, duration: 0.5, stagger: 0.1, scale: 1, });
+    return ()=>{
+      if(!products.hasMore){
+        store.session.set("hasMore", true)
+      }
+    }
+  }, [position, products])
+
   return (
     <Box>
       <Typography variant="h5">สินค้า</Typography>
       <Divider sx={{ my: 3 }} flexItem />
-      <Grid container spacing={2}>
-        {[...items,...items,...items].map((val, idx) => {
-          return (
-
-            <Grid key={idx} item xs={6} sm={4} md={3} lg={2}>
+      <InfiniteScroll
+        dataLength={products.data.data.length}
+        next={fetchMoreData}
+        hasMore={products?.hasMore ?? false}
+        loader={<LoadingProduct />}
+        endMessage={<Box display="flex" justifyContent='center' p={2}><ButtonCT size='large' onClick={() => router.push('search')}>Show More</ButtonCT></Box>}
+      >
+        <Grid container spacing={2}>
+          {products.data.data.map((val, idx) =>
+            <Grid key={val.id} item xs={6} sm={4} md={3} lg={2} ref={e => refProduct.current[idx] = e}>
               <StyledBoxItem>
-                <Box component="div" className="img" sx={{ background: `url("${val.image}")` }}></Box>
+                <Box width={'100%'} p={2}>
+                  <Box component="div" className="img" sx={{ background: `url("${[process.env.NEXT_PUBLIC_API_BASE_URL, val.coverPhoto?.[0]].filter(val => val).join('/')}")` }}></Box>
+                </Box>
                 <Box component='p'>{val.title}</Box>
               </StyledBoxItem>
             </Grid>
-
-          )
-        })}
-      </Grid>
-    </Box>
+          )}
+        </Grid>
+      </InfiniteScroll>
+    </Box >
   )
 }
 
@@ -112,7 +183,7 @@ const StyledBoxItem = styled(Box)(({ theme }) => ({
   },
   '& .img': {
     width: '100%',
-    // height: '250px',
+    height: 'auto',
     backgroundSize: 'cover',
     backgroundPosition: 'top',
     objectFit: 'cover',
