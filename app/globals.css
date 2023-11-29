@@ -84,14 +84,6 @@ a {
 /* Dropdown Menu */
 
 .dropdown {
-  /* position: absolute;
-  top: 58px;
-  width: 300px;
-  transform: translateX(-45%);
-  background-color: var(--bg);
-  border: var(--border);
-  border-radius: var(--border-radius);
-  padding: 1rem; */
   overflow: hidden;
   transition: all var(--seed) ease;
 
@@ -106,7 +98,6 @@ a {
   height: 50px;
   display: flex;
   align-items: center;
-  /* border-radius: var(--border-radius); */
   transition: var(500ms);
   padding: 0.5rem;
 }
@@ -165,25 +156,6 @@ a {
 }
 
 
-/* 
-.swiper {
-  width: 100%;
-  height: 100%;
-}
-
-.swiper-slide {
-  text-align: center;
-  font-size: 18px;
-  background: #fff;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-} */
-
-
-
 .swiper {
   width: 100%;
   height: 100%;
@@ -196,8 +168,6 @@ a {
   font-size: 18px;
   background: #fff;
   height: calc((100% - 30px) / 2) !important;
-
-  /* Center slide text vertically */
   display: flex;
   justify-content: center;
   align-items: center;

@@ -6,6 +6,20 @@ const withPWA = require("next-pwa")({
     register: true,
     skipWaiting: false,
     runtimeCaching,
+    poweredByHeader: false,
+    async headers() {
+        return [
+            {
+                source: '/',
+                headers: [
+                    {
+                        key: 'Content-Security-Policy',
+                        value: "frame-ancestors 'none'",
+                    },
+                ],
+            },
+        ];
+    },
 });
 const nextConfig = withPWA({});
 

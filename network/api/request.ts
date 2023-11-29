@@ -20,7 +20,7 @@ const Api = create({
   baseURL: DEFAULT_API_CONFIG.url,
   timeout: DEFAULT_API_CONFIG.timeout,
   headers: {
-    Accept: 'application/json',
+    Accept: 'application/json; charset=utf-8',
     credentials: true,
   },
 });
