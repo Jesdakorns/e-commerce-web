@@ -13,20 +13,5 @@ export const googleProvider = GoogleProvider({
             access_type: "offline",
             response_type: "code"
         }
-    },
-    async profile(profile, tokens): Promise<User & { accessToken?: string, refreshToken?: string }> {
-        console.log(profile, tokens)
-
-        const user = await postSignInGoogle({ email: profile?.email || '', name: profile?.name || '', image: profile?.picture || '' })
-        console.log(`🚀 ~ file: googleProvider.ts ~ line 20 ~ profile ~ user`, user)
-        return {
-            id: user?.data?.id ?? '',
-            name: user?.data?.name ?? '',
-            email: user?.data?.email ?? '',
-            image: user?.data?.image ?? '',
-            accessToken: user?.data?.accessToken ?? '',
-            refreshToken: user?.data?.refreshToken ?? ''
-
-        }
     }
 })
