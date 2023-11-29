@@ -2,8 +2,8 @@
     "theme_color": "#FFFFFF",
     "background_color": "#FFFFFF",
     "display": "standalone",
-    "scope": "/gemm-web-ui/",
-    "start_url": "/gemm-web-ui/",
+    "scope": "/",
+    "start_url": "/",
     "name": "Main Shop",
     "short_name": "Main Shop",
     "icons": [
