@@ -1,0 +1,17 @@
+{
+    "theme_color": "#FFFFFF",
+    "background_color": "#FFFFFF",
+    "display": "standalone",
+    "scope": "/gemm-web-ui/",
+    "start_url": "/gemm-web-ui/",
+    "name": "Main Shop",
+    "short_name": "Main Shop",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+  }
+  
