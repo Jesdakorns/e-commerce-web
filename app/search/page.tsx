@@ -8,7 +8,7 @@ import { cookies, headers } from 'next/headers'
 import { getProducts } from '@/network/api/api'
 import { getSession } from 'next-auth/react'
 import { getServerSession } from 'next-auth'
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
 
 const Page = async ({
   params: { search },
