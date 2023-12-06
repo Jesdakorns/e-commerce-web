@@ -131,7 +131,7 @@ const MenuType = () => {
                             productType.data.map((val, idx) => {
                                 return (
                                     <SwiperSlide key={idx} style={{ borderRadius: '10px', }}>
-                                        <StyledBoxItem onClick={() => router.push(`/search?s=${val.titleTh}`)}>
+                                        <StyledBoxItem onClick={() => router.push(`/search/?s=${val.titleTh}`)}>
                                             <Box component="div" className="img" sx={{ background: `url("${[process.env.NEXT_PUBLIC_API_BASE_URL, val.image].filter(val => val).join('/')}")` }}></Box>
                                             <p>{val.titleTh}</p>
                                         </StyledBoxItem>

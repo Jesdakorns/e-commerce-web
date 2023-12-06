@@ -1,6 +1,5 @@
 import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
-
 type TSession = Session & {
     user?: {
         accessToken?: string | null
@@ -10,6 +9,7 @@ type TSession = Session & {
 
 export const getAccessToken = async () => {
     try {
+       
         const session: TSession = await getSession()
         let accountToken = ''
         if (session?.user?.accessToken) {

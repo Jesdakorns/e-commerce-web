@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, Divider, Typography, useMediaQuery } from '@mui/material'
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Grid, Pagination } from 'swiper/modules';
 import { styled } from '@mui/system';
 import { themeMui } from '@/utils/theme';
+import { AppDispatch, useAppSelector } from '@/store';
+import { useDispatch } from 'react-redux';
+import { productsTopSellStore } from '@/store/actions';
+import ProductItem from '../Item/ProductItem';
 
 const items = [
     {
@@ -70,6 +74,15 @@ const items = [
 const BestSellingProducts = () => {
     const mediaIpad = useMediaQuery(themeMui.breakpoints.down('md'))
     const mediaMobile = useMediaQuery(themeMui.breakpoints.down('sm'))
+    const productsTopSell = useAppSelector((state) => state.productsTopSell)
+    const dispatch = useDispatch<AppDispatch>()
+
+    useEffect(() => {
+        if (productsTopSell.isSetData) return
+        dispatch(productsTopSellStore({}))
+    }, [])
+
+
     return (
         <Box>
             <Typography variant="h5">ขายดีประจำสัปดาห์</Typography>
@@ -84,13 +97,10 @@ const BestSellingProducts = () => {
                     modules={[]}
                     className="mySwiper"
                 >
-                    {items.map((val, idx) => {
+                    {productsTopSell.data.data.map((val, idx) => {
                         return (
                             <SwiperSlide key={idx}>
-                                <StyledBoxItem>
-                                    <Box component="div" className="img" sx={{ background: `url("${val.image}")` }}></Box>
-                                    <Box component='p'>{val.title}</Box>
-                                </StyledBoxItem>
+                                <ProductItem title={val.title} image={val.coverPhoto?.[0]} />
                             </SwiperSlide>
                         )
                     })}
@@ -112,8 +122,8 @@ const StyledBoxItem = styled(Box)(({ theme }) => ({
     textAlign: 'center',
     borderRadius: '10px',
     display: 'flex !important',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     flexDirection: 'column',
     cursor: 'pointer',
     backgroundColor: '#ffff',
@@ -133,13 +143,14 @@ const StyledBoxItem = styled(Box)(({ theme }) => ({
         objectFit: 'cover',
         aspectRatio: '2/2'
     },
-    '& p': {
-        width: '90%',
+    '& .box-text': {
+        width: '100%',
         color: '#2E2E2E',
-        fontSize: '1.2rem',
+        fontSize: '1rem',
         letterSpacing: '0.5',
         textAlign: 'center',
-        height: '60px',
+        height: '50px',
+        gap: '5px',
         overflow: 'hidden',
     },
 }));

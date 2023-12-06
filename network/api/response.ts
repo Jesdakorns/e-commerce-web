@@ -15,6 +15,7 @@ export interface IResponse<T> {
   status?: string;
   httpStatusCode?: number;
   problem?: PROBLEM_CODE;
+  meta?: META
   data?: T;
 }
 
@@ -25,6 +26,7 @@ export interface Status {
 
 export interface ApiBaseResponse<T> {
   data?: T;
+  meta?: META
 }
 
 export interface AuthData {
@@ -92,9 +94,10 @@ export interface IPromotions {
 
 export interface IProducts {
   id: number;
-  title: number;
+  title: string;
   description: string;
   price: number;
+  discount: number;
   coverPhoto: string[];
   stockQuantity: number;
   salesAmount: number;
@@ -104,15 +107,26 @@ export interface IProducts {
 }
 
 export interface IParamsProducts {
-  limit: number
-  page: number
+  limit?: number
+  page?: number
+  order?: string
+  search?: string
+  orderByField?: string
+  lowPrice?: number
+  highPrice?: number
 }
 
 
 export interface IPagination<T> {
   data: T
+  meta?: META
+}
+
+export interface META {
+  page: number,
+  limit: number,
   total: number,
+  lastPage: number,
   nextPage: number | null,
   prevPage: number | null
 }
-

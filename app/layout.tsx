@@ -7,6 +7,8 @@ import LogoMain from '@/src/assets/images/logo_main.png';
 import Toast from "@/components/Toast";
 import DefaultLayout from "@/components/Layout";
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { getSession } from "next-auth/react";
+import { cookies } from 'next/headers'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,9 +22,9 @@ export const metadata: Metadata = {
   robots: {
     googleBot: process.env.NEXT_PUBLIC_BASE_URL
   },
-  alternates: {
-    canonical: process.env.NEXT_PUBLIC_BASE_URL
-  },
+  // alternates: {
+  //   canonical: process.env.NEXT_PUBLIC_BASE_URL
+  // },
 };
 
 export default async function RootLayout({
@@ -32,6 +34,7 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
+      <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
       <meta name="apple-mobile-web-app-title" content="Main Shop" />

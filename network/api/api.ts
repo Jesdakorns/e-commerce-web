@@ -38,10 +38,20 @@ export const getPromotion = () =>
   });
 
 
-export const getProducts = ({ limit, page }: IParamsProducts) =>
-  request<IPagination<IProducts[]>>({
+export const getProducts = (params: IParamsProducts, aadToken?: string) =>
+  request<IProducts[]>({
     method: 'get',
-    url: '/product',
-    params: { limit ,page},
+    url: '/product/all',
+    params,
+    aadToken
+  });
+
+
+
+export const getProductsTopSell = ({ limit, page }: IParamsProducts) =>
+  request<IProducts[]>({
+    method: 'get',
+    url: '/product/topSell',
+    params: { limit, page },
   });
 

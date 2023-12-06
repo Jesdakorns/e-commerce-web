@@ -16,14 +16,15 @@ type TMenuApp = {
 const NavMenu = () => {
     const router = useRouter()
     const pathname = usePathname()
+    console.log(`🚀 ~ file: NavMenu.tsx ~ line 19 ~ NavMenu ~ pathname`, pathname.split('/'))
     const matchesMobile = useMediaQuery(themeMui.breakpoints.down('md'));
     const { watch, setValue } = useFormContext<TFrom>()
     const [menuSelect, setMenuSelect] = useState<number | undefined>()
     const handleClickMenu = (event: React.SyntheticEvent<Element, Event>, val: number) => {
         const url = event.currentTarget.getAttribute('data-url')
-        if (!url?.includes('/search')) {
+        if (!url?.includes('search')) {
             setMenuSelect(val)
-            router.push(url || '')
+            router.push(`/${url}` || '')
             return
         }
         setValue('dialogSearch.open', true)
@@ -34,7 +35,7 @@ const NavMenu = () => {
         const elMenu = document.querySelectorAll('[data-url]')
         for (var i = 0; i < elMenu.length; i++) {
             const url = elMenu[i].getAttribute('data-url')
-            if (url === pathname) {
+            if (url === pathname.split('/')?.[1]) {
                 const idx = elMenu[i].getAttribute('data-index')
                 setMenuSelect(+(idx ?? 0))
             }
@@ -50,25 +51,25 @@ const NavMenu = () => {
             >
                 <StyledBottomNavigationAction
                     data-index='0'
-                    data-url='/'
+                    data-url=''
                     label='Home'
                     icon={<IoHome />}
                 />
                 <StyledBottomNavigationAction
                     data-index='1'
-                    data-url="/cart"
+                    data-url="cart"
                     label='Cart'
                     icon={<Badge color="error" max={999} badgeContent={1}><IoCartSharp /></Badge>}
                 />
                 <StyledBottomNavigationAction
                     data-index='2'
-                    data-url="/search"
+                    data-url="search"
                     label='Search'
                     icon={<IoSearchSharp />}
                 />
                 <StyledBottomNavigationAction
                     data-index='3'
-                    data-url="/chat"
+                    data-url="chat"
                     label='Chat'
                     icon={<Badge color="error" max={999} badgeContent={1}><IoChatbubbleSharp /></Badge>}
                 />
@@ -96,15 +97,18 @@ const StyledBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
 const StyledBottomNavigationAction = styled(BottomNavigationAction)(({ theme }) => ({
     width: '100%',
     color: `#8d8b8b`,
-    fontSize: '1.2em',
+    fontSize: '22px',
     borderRadius: '10px',
     maxWidth: '100%',
     minWidth: '60px',
+    '& svg': {
+        fontSize: '18px',
+    },
     '&.Mui-selected': {
         color: `${theme.palette.primary.main}`,
     },
     '& .MuiBottomNavigationAction-label': {
-        fontSize: '0.6em !important',
+        fontSize: '14px !important',
     },
     '&:hover': {
         background: `${theme.palette.primary.main}30`,

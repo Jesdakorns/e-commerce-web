@@ -41,7 +41,6 @@ const Home = () => {
           
           <Promotion />
           <MenuType />
-          {/* <MenuType /> */}
           <BestSellingProducts />
           <ProductList />
         </Box>

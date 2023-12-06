@@ -5,8 +5,12 @@ import { IoSearchSharp } from 'react-icons/io5';
 import { FieldValues, Form, FormSubmitHandler, useFormContext } from 'react-hook-form';
 import { useAppContext } from '@/context/AppProvider';
 import { TFrom } from '.';
+import { useRouter } from 'next/navigation';
+import { useAppSelector } from '@/store';
 
 const SearchItem = () => {
+    const productType = useAppSelector((state) => state.productType)
+    const router = useRouter()
     const { watch, setValue, handleSubmit } = useFormContext<TFrom>()
     const { open } = watch('dialogSearch')
 
@@ -16,6 +20,8 @@ const SearchItem = () => {
     }
 
     const handleSubmitSearch = async (data: FieldValues) => {
+        handleCloseSearch()
+        router.push('/search/?s=' + data.dialogSearch.search)
     }
     return (
         <>

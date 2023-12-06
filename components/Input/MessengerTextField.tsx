@@ -12,7 +12,7 @@ export const MessengerTextField = ({ mode = 'error', message }: PropsMessengerTe
         <Box
             sx={{
                 fontSize: `12px`,
-                margin: `5px 0`,
+                margin: message ? `5px 0` : '0',
                 color: mode === 'error' ? `${themeColor.DANGER_COLOR}` : null,
             }}
         >

@@ -22,6 +22,7 @@ const Api = create({
   headers: {
     Accept: 'application/json; charset=utf-8',
     credentials: true,
+    
   },
 });
 
@@ -30,9 +31,11 @@ export const request = async <T>({
   url,
   params,
   axiosConfig,
+  aadToken
 }: IRequest): Promise<IResponse<T>> => {
+  Api.setHeader('Access-Control-Allow-Origin', `${process.env.NEXT_PUBLIC_API_BASE_URL}`);
   // wait back end for reference token
-  const token = await getAccessToken();
+  const token = aadToken || await getAccessToken();
   if (token) {
     Api.setHeader('Authorization', `Bearer ${token}`);
   }
@@ -52,6 +55,7 @@ export const request = async <T>({
   if (response.ok) {
     const responseData = {
       data: response.data?.data,
+      meta: response.data?.meta,
       httpStatusCode: response.status,
     };
     // eslint-disable-next-line no-console
@@ -75,7 +79,8 @@ export const request = async <T>({
     );
 
     const responseData = {
-      data: response.data,
+      data: response.data?.data,
+      meta: response.data?.meta,
       httpStatusCode: response.status,
       problem: response.problem,
     };

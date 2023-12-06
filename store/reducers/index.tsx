@@ -21,6 +21,8 @@ export type TInitialState = {
   promotion: TPromotionsState
   productType: TProductTypeState
   products: TProductsState
+  productsSearch: TProductsState
+  productsTopSell: TProductsState
 }
 
 const initialState: TInitialState = {
@@ -38,14 +40,30 @@ const initialState: TInitialState = {
   products: {
     data: {
       data: [],
-      total: 0,
-      nextPage: null,
-      prevPage: null
+      meta: undefined
     },
     hasMore: true,
     loading: true,
     isSetData: false
-  }
+  },
+  productsTopSell: {
+    data: {
+      data: [],
+      meta: undefined
+    },
+    hasMore: true,
+    loading: true,
+    isSetData: false
+  },
+  productsSearch: {
+    data: {
+      data: [],
+      meta: undefined
+    },
+    hasMore: true,
+    loading: true,
+    isSetData: false
+  },
 };
 
 
@@ -65,6 +83,16 @@ export const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         products: action.payload,
+      };
+    case "PRODUCTS_SEARCH":
+      return {
+        ...state,
+        productsSearch: action.payload,
+      };
+    case "PRODUCTS_TOP_SELL":
+      return {
+        ...state,
+        productsTopSell: action.payload,
       };
     default:
       return { ...state };

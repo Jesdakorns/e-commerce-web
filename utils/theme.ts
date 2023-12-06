@@ -68,5 +68,13 @@ export const themeMui = createTheme({
         },
       },
     },
+    MuiIconButton: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+        //  '& svg':{fontSize: '100%'}
+        },
+      },
+    },
   }
 });

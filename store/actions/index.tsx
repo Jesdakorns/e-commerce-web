@@ -1,6 +1,6 @@
-import { getProductType, getProducts, getPromotion } from '@/network/api/api'
+import { getProductType, getProducts, getProductsTopSell, getPromotion } from '@/network/api/api'
 import { TProductTypeState, TProductsState, TPromotionsState } from '../reducers'
-import { IPagination, IProducts } from '@/network/api/response'
+import { IPagination, IParamsProducts, IProducts } from '@/network/api/response'
 import store from 'store2'
 
 
@@ -46,12 +46,10 @@ export const productTypeStore = () => async (dispatch: any, subscribe: any) => {
    return subscribe({ type: 'PRODUCT_TYPE', payload: data })
 }
 
-export const productsStore = ({ val, limit = 12, page = 1, max = 100 }: { val?: IProducts[], limit?: number, page?: number, max?: number }) => async (dispatch: any, subscribe: any) => {
+export const productsStore = ({ val, limit = 12, page = 1, max = 100 }: { val?: IProducts[], limit?: number, page?: number, max?: number, search?: string }) => async (dispatch: any, subscribe: any) => {
    let data: IPagination<IProducts[]> = {
       data: [],
-      total: 0,
-      nextPage: null,
-      prevPage: null
+      meta: undefined
    }
    let isSetData = false
    let loading = true
@@ -60,9 +58,10 @@ export const productsStore = ({ val, limit = 12, page = 1, max = 100 }: { val?: 
    try {
       const res = await getProducts({ limit, page })
       if (res?.data) {
-         data = val?.length ? { ...res.data, data: [...val, ...res?.data?.data] } : res.data
+         data.data = val?.length ? [...val, ...res?.data] : res.data
+         data.meta = res.meta
          isSetData = true
-         nextPage = data.nextPage
+         nextPage = data.meta?.nextPage
       }
    } catch (error) {
 
@@ -75,4 +74,64 @@ export const productsStore = ({ val, limit = 12, page = 1, max = 100 }: { val?: 
 
    dispatch({ type: 'PRODUCTS', payload: { data, isSetData, loading, hasMore } })
    return subscribe({ type: 'PRODUCTS', payload: { data, isSetData, loading, hasMore } })
+}
+
+export const productsSearchStore = ({ val, limit = 2, page = 1, max = 100, order, search, orderByField, lowPrice, highPrice }: IParamsProducts & { val?: IProducts[], max?: number }) => async (dispatch: any, subscribe: any) => {
+   let data: IPagination<IProducts[]> = {
+      data: [],
+      meta: undefined
+   }
+   let isSetData = false
+   let loading = true
+   let hasMore = true
+   let nextPage = null
+   try {
+      const res = await getProducts({ limit, page, order, search, orderByField, lowPrice, highPrice })
+      if (res?.data) {
+         data.data = val?.length ? [...val, ...res?.data] : res.data
+         data.meta = res.meta
+         isSetData = true
+         nextPage = data.meta?.nextPage
+      }
+   } catch (error) {
+
+   } finally {
+      loading = false
+      if (data.data.length >= max || !nextPage) {
+         hasMore = false
+      }
+   }
+
+   dispatch({ type: 'PRODUCTS_SEARCH', payload: { data, isSetData, loading, hasMore } })
+   return subscribe({ type: 'PRODUCTS_SEARCH', payload: { data, isSetData, loading, hasMore } })
+}
+
+export const productsTopSellStore = ({ val, limit = 10, page = 1, max = 100 }: { val?: IProducts[], limit?: number, page?: number, max?: number }) => async (dispatch: any, subscribe: any) => {
+   let data: IPagination<IProducts[]> = {
+      data: [],
+      meta: undefined
+   }
+   let isSetData = false
+   let loading = true
+   let hasMore = true
+   let nextPage = null
+   try {
+      const res = await getProductsTopSell({ limit, page })
+      if (res?.data) {
+         data.data = val?.length ? [...val, ...res?.data] : res.data
+         data.meta = res.meta
+         isSetData = true
+         nextPage = data.meta?.nextPage
+      }
+   } catch (error) {
+
+   } finally {
+      loading = false
+      if (data.data.length >= max || !nextPage) {
+         hasMore = false
+      }
+   }
+
+   dispatch({ type: 'PRODUCTS_TOP_SELL', payload: { data, isSetData, loading, hasMore } })
+   return subscribe({ type: 'PRODUCTS_TOP_SELL', payload: { data, isSetData, loading, hasMore } })
 }

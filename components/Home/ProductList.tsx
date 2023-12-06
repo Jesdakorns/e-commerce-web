@@ -9,6 +9,7 @@ import ButtonCT from '../Button/Button';
 import { useRouter } from 'next/navigation';
 import { gsap } from "gsap";
 import store from 'store2';
+import ProductItem from '../Item/ProductItem';
 
 const items = [
   {
@@ -71,7 +72,7 @@ const items = [
   },
 ];
 
-const LoadingProduct = () => {
+export const LoadingProduct = () => {
   return (
     <Box>
       <Grid container spacing={2}>
@@ -93,6 +94,7 @@ const LoadingProduct = () => {
 
 const ProductList = () => {
   const products = useAppSelector((state) => state.products)
+  console.log(`🚀 ~ file: ProductList.tsx ~ line 96 ~ ProductList ~ products`, products)
   const dispatch = useDispatch<AppDispatch>()
   const router = useRouter()
   const refProduct = useRef<any[]>([]);
@@ -100,12 +102,12 @@ const ProductList = () => {
 
   const fetchMoreData = () => {
     // setTimeout(() => {
-      setPosition(products.data.data.length)
-      try {
-        dispatch(productsStore({ val: products.data.data, page: products.data.nextPage ?? 1, max: 24 }))
-      } catch (error) {
+    setPosition(products.data.data.length)
+    try {
+      dispatch(productsStore({ val: products.data.data, page: products.data.meta?.nextPage ?? 1, max: 24 }))
+    } catch (error) {
 
-      }
+    }
     // }, 2000);
   };
 
@@ -123,8 +125,8 @@ const ProductList = () => {
       scale: 0,
       duration: 0,
     }, { opacity: 1, duration: 0.5, stagger: 0.1, scale: 1, });
-    return ()=>{
-      if(!products.hasMore){
+    return () => {
+      if (!products.hasMore) {
         store.session.set("hasMore", true)
       }
     }
@@ -144,12 +146,7 @@ const ProductList = () => {
         <Grid container spacing={2}>
           {products.data.data.map((val, idx) =>
             <Grid key={val.id} item xs={6} sm={4} md={3} lg={2} ref={e => refProduct.current[idx] = e}>
-              <StyledBoxItem>
-                <Box width={'100%'} p={2}>
-                  <Box component="div" className="img" sx={{ background: `url("${[process.env.NEXT_PUBLIC_API_BASE_URL, val.coverPhoto?.[0]].filter(val => val).join('/')}")` }}></Box>
-                </Box>
-                <Box component='p'>{val.title}</Box>
-              </StyledBoxItem>
+              <ProductItem title={val.title} image={val.coverPhoto?.[0]} totalSales={val.salesAmount} price={val.price} discount={val.discount} rating={2} />
             </Grid>
           )}
         </Grid>
