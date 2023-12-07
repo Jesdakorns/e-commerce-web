@@ -9,7 +9,7 @@ type Props = {
     price?: number,
     discount?: number
     rating?: number
-    list?:boolean
+    list?: boolean
 }
 
 export const LoadingProductItem = () => {
@@ -34,13 +34,13 @@ export const LoadingProductItem = () => {
 }
 
 
-const ProductItem = ({ title, image, totalSales, price, discount, rating,list }: Props) => {
+const ProductItem = ({ title, image, totalSales, price, discount, rating, list }: Props) => {
 
     const percentDiscount = ((discount ?? 0) * 100) / (price ?? 0)
     return (
-        <StyledBoxItem sx={{flexDirection:list?'row':'column'}}>
+        <StyledBoxItem sx={{ flexDirection: list ? 'row' : 'column' }}>
 
-            <Box component="div" className="img" sx={{width: list ? '120px' : '100%', position: 'relative', background: `url("${[process.env.NEXT_PUBLIC_API_BASE_URL, image].filter(val => val).join('/')}")` }}>
+            <Box component="div" className="img" sx={{ width: list ? '120px' : '100%', height: list ? '120px' : '100%', position: 'relative', background: `url("${[process.env.NEXT_PUBLIC_API_BASE_URL, image].filter(val => val).join('/')}")` }}>
                 {discount ? (
                     <Box sx={{
                         width: 'fit-content',
