@@ -183,3 +183,31 @@ a {
   white-space: nowrap;
   overflow: hidden; */
 }
+
+/* 
+.iconSearchAnimetion{
+  animation: example 1s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes example {
+  0% {
+    top:90px;
+    left: 90px
+  }
+  40% {
+    top:93px;
+    left: 93px
+  }
+  70% {
+    top:90px;
+    left: 93px
+  }
+  100% {
+    top:90px;
+    left: 93px
+  }
+  100% {
+    top:90px;
+    left: 90px
+  }
+} */

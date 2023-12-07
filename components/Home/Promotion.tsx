@@ -19,7 +19,7 @@ const Promotion = () => {
         <Box display='flex' flexDirection={{ xs: 'column', md: 'row' }} width={'100%'} gap={1}>
             <Box width={{ xs: '100%', md: '60%' }} height={'100%'}>
                 {promotion?.loading ? (
-                    <Skeleton variant="rectangular" width={'100%'} height={'100%'} sx={{ objectFit: 'cover', aspectRatio: '25/7', borderRadius: '10px' }} />
+                    <Skeleton variant="rectangular" width={'100%'} height={'100%'} sx={{ objectFit: 'cover', aspectRatio: '3/1', borderRadius: '10px' }} />
                 ) : (
                     <Swiper
                         style={{ borderRadius: '10px', }}
@@ -37,7 +37,7 @@ const Promotion = () => {
                                     <Box
                                         onClick={() => { window.open(val.url, '_back') }}
                                         alt='main promotion image'
-                                        sx={{ width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '25/7' }}
+                                        sx={{ width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '3/1',background:'#0000' }}
                                         component='img'
                                         loading="lazy"
                                         src={[process.env.NEXT_PUBLIC_API_BASE_URL, val.image].filter(val => val).join('/')}>

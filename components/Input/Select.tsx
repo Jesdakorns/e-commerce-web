@@ -50,9 +50,8 @@ const SelectForm = <FieldValue extends Record<string, any>>({
             name={name}
             rules={rules}
             render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => (
-                <Box width={'100%'}>
+                <Box>
                     <Box
-                        width={'100%'}
                         mb={
                             startLabelIcon || (showRequired && rules?.required) || endLabelIcon ? 0.7 : 0
                         }

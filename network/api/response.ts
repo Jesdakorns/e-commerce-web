@@ -16,6 +16,7 @@ export interface IResponse<T> {
   httpStatusCode?: number;
   problem?: PROBLEM_CODE;
   meta?: META
+  other?: any
   data?: T;
 }
 
@@ -26,6 +27,7 @@ export interface Status {
 
 export interface ApiBaseResponse<T> {
   data?: T;
+  other?: any;
   meta?: META
 }
 

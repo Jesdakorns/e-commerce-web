@@ -55,6 +55,7 @@ export const request = async <T>({
   if (response.ok) {
     const responseData = {
       data: response.data?.data,
+      other:response.data?.other,
       meta: response.data?.meta,
       httpStatusCode: response.status,
     };

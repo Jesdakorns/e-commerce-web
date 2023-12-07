@@ -2,6 +2,7 @@ import { IPagination, IProductType, IProducts, IPromotions } from "@/network/api
 import { useSelector } from "react-redux";
 
 type TFeast = {
+  other?: any
   hasMore?: boolean
   loading: boolean,
   isSetData: boolean

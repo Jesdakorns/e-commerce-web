@@ -9,6 +9,7 @@ type Props = {
     price?: number,
     discount?: number
     rating?: number
+    list?:boolean
 }
 
 export const LoadingProductItem = () => {
@@ -33,13 +34,13 @@ export const LoadingProductItem = () => {
 }
 
 
-const ProductItem = ({ title, image, totalSales, price, discount, rating }: Props) => {
+const ProductItem = ({ title, image, totalSales, price, discount, rating,list }: Props) => {
 
     const percentDiscount = ((discount ?? 0) * 100) / (price ?? 0)
     return (
-        <StyledBoxItem>
+        <StyledBoxItem sx={{flexDirection:list?'row':'column'}}>
 
-            <Box component="div" className="img" sx={{ position: 'relative', background: `url("${[process.env.NEXT_PUBLIC_API_BASE_URL, image].filter(val => val).join('/')}")` }}>
+            <Box component="div" className="img" sx={{width: list ? '120px' : '100%', position: 'relative', background: `url("${[process.env.NEXT_PUBLIC_API_BASE_URL, image].filter(val => val).join('/')}")` }}>
                 {discount ? (
                     <Box sx={{
                         width: 'fit-content',
@@ -101,16 +102,19 @@ const StyledBoxItem = styled(Box)(({ theme }) => ({
         boxShadow: `0px 2px 14px -9px ${theme.palette.primary.main}`,
         backgroundColor: '#fff',
         ['@media (max-width: 666px)']: {
-            margin: 'auto'
+            // margin: 'auto'
         }
     },
     '& .img': {
-        width: '100%',
+        // width: '100%',
         // height: '250px',
-        backgroundSize: 'cover',
-        backgroundPosition: 'top',
+        // backgroundSize: 'cover',
+        // backgroundPosition: 'top',
         objectFit: 'cover',
-        aspectRatio: '2/2'
+        aspectRatio: '1/1',
+        backgroundSize: `contain`,
+        backgroundPosition: `center`,
+        backgroundRepeat: `no-repeat`,
     },
     '& .box-text': {
         width: '100%',

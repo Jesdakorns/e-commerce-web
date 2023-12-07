@@ -4,7 +4,7 @@ import React, { Suspense, lazy, useCallback, useEffect, useState } from 'react'
 import Select from '../Input/Select'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { IoFunnel, IoOptions, IoReturnDownForward, IoSearchSharp } from 'react-icons/io5'
+import { IoAppsSharp, IoFunnel, IoList, IoOptions, IoReturnDownForward, IoSearchSharp } from 'react-icons/io5'
 import { themeColor } from '@/utils/themeColor'
 import ProductItem, { LoadingProductItem } from '../Item/ProductItem'
 import { AppDispatch, useAppSelector } from '@/store'
@@ -23,11 +23,13 @@ import useCustomRouter from '@/hook/useCustomRouter'
 export type SearchFromProps = {
     sort?: string
     checkbox?: string
-    lowPrice?: string
-    highPrice?: string
+    price: number[]
+    lowPrice?: number | null
+    highPrice?: number | null
 }
 
 const Search = () => {
+    const [list, setList] = useState(false)
     const matchesMobile = useMediaQuery(themeMui.breakpoints.down('lg'));
     const productsSearch = useAppSelector((state) => state.productsSearch)
     const dispatch = useDispatch<AppDispatch>()
@@ -44,8 +46,9 @@ const Search = () => {
         defaultValues: {
             sort: undefined,
             checkbox: undefined,
-            lowPrice: undefined,
-            highPrice: undefined
+            price: [0, 10],
+            // lowPrice: undefined,
+            // highPrice: undefined
         }
     })
     const { watch, reset } = methods
@@ -71,10 +74,11 @@ const Search = () => {
         reset({
             sort: sortParams,
             checkbox: '',
-            lowPrice: lowPriceParams,
-            highPrice: highPriceParams
+            price: [+(lowPriceParams ?? 0), highPriceParams ? +(highPriceParams) : productsSearch?.other?.['priceMax']],
+            lowPrice: +lowPriceParams,
+            highPrice: +highPriceParams
         })
-    }, [])
+    }, [productsSearch])
 
 
     useEffect(() => {
@@ -95,7 +99,7 @@ const Search = () => {
         <>
             <FormProvider {...methods}>
                 <Container maxWidth='lg'>
-                    <Grid container spacing={5} justifyContent="center">
+                    <Grid container spacing={3} justifyContent="center">
                         <Grid item xs={12} md={12} lg={3} xl={3} sx={{ display: { xs: 'none', lg: 'block' } }}>
                             <Filter />
                         </Grid>
@@ -106,15 +110,18 @@ const Search = () => {
                                     ค้นหา: <Box color={themeColor.PRIMARY_COLOR} component='span'>{searchItemParams}</Box>
                                 </Typography>
                             </Box>
-                            <Box display='flex' justifyContent='space-between' alignItems='center' p={2} mb={2} sx={{ background: '#f6f6f6c2', }}>
-                                <Box width={100}>
+                            <Box display='flex' gap={1} justifyContent='flex-end' alignItems='center' p={2} mb={2} sx={{ background: '#f6f6f6c2', }}>
+                                {/* <Box width={100}>
                                     เรียงโดย
-                                </Box>
+                                </Box> */}
+                                 <IconButton size='medium' onClick={() => setList(true)}><IoList style={{ fontSize: '100%' }} /></IconButton>
+                                <IconButton size='medium' onClick={() => setList(false)}><IoAppsSharp style={{ fontSize: '100%' }} /></IconButton>
+                                {matchesMobile ? <IconButton size='medium' onClick={toggleDrawer(true)}><IoOptions style={{ fontSize: '100%' }} /></IconButton> : null}
                                 <Select
-                                    sx={{ width: 190 }}
+                                    sx={{ width: 170 }}
                                     name='sort'
                                     data={[
-                                        { label: 'ราคา', value: '' },
+                                        { label: 'เรียงโดยราคา', value: '' },
                                         { label: 'ราคา: จากน้อยไปมาก', value: 'ASC' },
                                         { label: 'ราคา: จากมากไปน้อย', value: 'DESC' },
                                     ]}
@@ -124,9 +131,9 @@ const Search = () => {
                                     }}
                                 >
                                 </Select>
-                                {matchesMobile ? <IconButton size='medium' onClick={toggleDrawer(true)}><IoOptions style={{ fontSize: '100%' }} /></IconButton> : null}
+                               
                             </Box>
-                            <Products />
+                            <Products list={list}/>
                         </Grid>
                     </Grid>
                     <Drawer

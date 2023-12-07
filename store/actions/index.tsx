@@ -81,6 +81,7 @@ export const productsSearchStore = ({ val, limit = 2, page = 1, max = 100, order
       data: [],
       meta: undefined
    }
+   let other = {}
    let isSetData = false
    let loading = true
    let hasMore = true
@@ -90,6 +91,7 @@ export const productsSearchStore = ({ val, limit = 2, page = 1, max = 100, order
       if (res?.data) {
          data.data = val?.length ? [...val, ...res?.data] : res.data
          data.meta = res.meta
+         other = res?.other
          isSetData = true
          nextPage = data.meta?.nextPage
       }
@@ -102,8 +104,8 @@ export const productsSearchStore = ({ val, limit = 2, page = 1, max = 100, order
       }
    }
 
-   dispatch({ type: 'PRODUCTS_SEARCH', payload: { data, isSetData, loading, hasMore } })
-   return subscribe({ type: 'PRODUCTS_SEARCH', payload: { data, isSetData, loading, hasMore } })
+   dispatch({ type: 'PRODUCTS_SEARCH', payload: { data, other, isSetData, loading, hasMore } })
+   return subscribe({ type: 'PRODUCTS_SEARCH', payload: { data, other, isSetData, loading, hasMore } })
 }
 
 export const productsTopSellStore = ({ val, limit = 10, page = 1, max = 100 }: { val?: IProducts[], limit?: number, page?: number, max?: number }) => async (dispatch: any, subscribe: any) => {
