@@ -7,8 +7,9 @@ const useCustomRouter = () => {
   const searchParams = useSearchParams()
   const queryParams = new URLSearchParams(searchParams)
 
-  const pushRouter = (valPathname: string, params: URLSearchParams) => {
-    router.push(`${valPathname}?${params.toString()}`)
+  const pushRouter = (valPathname: string, params?: URLSearchParams) => {
+    const routerPath = [valPathname, params?.toString()].filter(val => val).join('?')
+    router.push(routerPath)
   }
 
   const pushQueryRouter = (params: URLSearchParams) => {

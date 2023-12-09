@@ -1,5 +1,5 @@
 import { request } from './request';
-import { IMe, IPagination, IParamsProducts, IProductType, IProducts, IPromotion, IPromotions, ISignIn, ISignInGoogle, ISignInRes, ISignUp } from './response';
+import { IMe, IPagination, IParamsProductId, IParamsProducts, IPriceMax, IProduct, IProductType, IPromotion, IPromotions, ISignIn, ISignInGoogle, ISignInRes, ISignUp } from './response';
 
 export const getMe = () =>
   request<IMe>({
@@ -39,7 +39,7 @@ export const getPromotion = () =>
 
 
 export const getProducts = (params: IParamsProducts, aadToken?: string) =>
-  request<IProducts[]>({
+  request<IProduct[]>({
     method: 'get',
     url: '/product/all',
     params,
@@ -47,11 +47,26 @@ export const getProducts = (params: IParamsProducts, aadToken?: string) =>
   });
 
 
-
 export const getProductsTopSell = ({ limit, page }: IParamsProducts) =>
-  request<IProducts[]>({
+  request<IProduct[]>({
     method: 'get',
     url: '/product/topSell',
     params: { limit, page },
+  });
+
+
+export const getPriceMax = () =>
+  request<IPriceMax>({
+    method: 'get',
+    url: '/product/priceMax',
+  });
+
+
+export const getProductId = ({ id, ...params }: IParamsProductId, aadToken?: string) =>
+  request<IProduct>({
+    method: 'get',
+    url: `/product/${id}`,
+    params,
+    aadToken
   });
 

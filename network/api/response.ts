@@ -94,7 +94,7 @@ export interface IPromotions {
 }
 
 
-export interface IProducts {
+export interface IProduct {
   id: number;
   title: string;
   description: string;
@@ -107,6 +107,14 @@ export interface IProducts {
   createdAt: Date;
   updatedAt: Date;
 }
+export interface IPriceMax {
+  priceMax: number
+}
+
+export interface IParamsProductId {
+  id: number
+}
+
 
 export interface IParamsProducts {
   limit?: number

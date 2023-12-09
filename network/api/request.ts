@@ -22,7 +22,7 @@ const Api = create({
   headers: {
     Accept: 'application/json; charset=utf-8',
     credentials: true,
-    
+
   },
 });
 
@@ -36,6 +36,7 @@ export const request = async <T>({
   Api.setHeader('Access-Control-Allow-Origin', `${process.env.NEXT_PUBLIC_API_BASE_URL}`);
   // wait back end for reference token
   const token = aadToken || await getAccessToken();
+  console.log(`🚀 ~ file: request.ts ~ line 39 ~ token`, token)
   if (token) {
     Api.setHeader('Authorization', `Bearer ${token}`);
   }
@@ -55,7 +56,7 @@ export const request = async <T>({
   if (response.ok) {
     const responseData = {
       data: response.data?.data,
-      other:response.data?.other,
+      other: response.data?.other,
       meta: response.data?.meta,
       httpStatusCode: response.status,
     };

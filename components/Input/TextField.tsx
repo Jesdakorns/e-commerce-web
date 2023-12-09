@@ -12,7 +12,7 @@ export const CustomTextField = styled(TextField)(({ size }) => ({
         background: '#fff',
         marginBottom: '5px',
         '&:hover fieldset': {
-            border: `2px solid #b9b9b9  !important`,
+            border: `2px solid #b9b9b9`,
         },
         '& input': {
             padding: size === 'small' ? '7.5px 14px' : size === 'medium' ? '9.5px 14px' : '14px 14px',
@@ -21,7 +21,7 @@ export const CustomTextField = styled(TextField)(({ size }) => ({
             border: `2px solid #b9b9b9 `,
 
         },
-        '&.Mui-focused fieldset': { borderWidth: `2px !important` },
+        '&.Mui-focused fieldset': { borderWidth: `2px` },
         '&.Mui-error fieldset': {
             // borderColor: theme.DANGER_COLOR,
         },

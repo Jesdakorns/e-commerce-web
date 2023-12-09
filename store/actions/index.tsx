@@ -1,6 +1,6 @@
-import { getProductType, getProducts, getProductsTopSell, getPromotion } from '@/network/api/api'
+import { getPriceMax, getProductType, getProducts, getProductsTopSell, getPromotion } from '@/network/api/api'
 import { TProductTypeState, TProductsState, TPromotionsState } from '../reducers'
-import { IPagination, IParamsProducts, IProducts } from '@/network/api/response'
+import { IPagination, IParamsProducts, IProduct } from '@/network/api/response'
 import store from 'store2'
 
 
@@ -46,8 +46,8 @@ export const productTypeStore = () => async (dispatch: any, subscribe: any) => {
    return subscribe({ type: 'PRODUCT_TYPE', payload: data })
 }
 
-export const productsStore = ({ val, limit = 12, page = 1, max = 100 }: { val?: IProducts[], limit?: number, page?: number, max?: number, search?: string }) => async (dispatch: any, subscribe: any) => {
-   let data: IPagination<IProducts[]> = {
+export const productsStore = ({ val, limit = 12, page = 1, max = 100 }: { val?: IProduct[], limit?: number, page?: number, max?: number, search?: string }) => async (dispatch: any, subscribe: any) => {
+   let data: IPagination<IProduct[]> = {
       data: [],
       meta: undefined
    }
@@ -76,8 +76,8 @@ export const productsStore = ({ val, limit = 12, page = 1, max = 100 }: { val?: 
    return subscribe({ type: 'PRODUCTS', payload: { data, isSetData, loading, hasMore } })
 }
 
-export const productsSearchStore = ({ val, limit = 2, page = 1, max = 100, order, search, orderByField, lowPrice, highPrice }: IParamsProducts & { val?: IProducts[], max?: number }) => async (dispatch: any, subscribe: any) => {
-   let data: IPagination<IProducts[]> = {
+export const productsSearchStore = ({ val, limit = 24, page = 1, max = 100, order, search, orderByField, lowPrice, highPrice }: IParamsProducts & { val?: IProduct[], max?: number }) => async (dispatch: any, subscribe: any) => {
+   let data: IPagination<IProduct[]> = {
       data: [],
       meta: undefined
    }
@@ -108,8 +108,8 @@ export const productsSearchStore = ({ val, limit = 2, page = 1, max = 100, order
    return subscribe({ type: 'PRODUCTS_SEARCH', payload: { data, other, isSetData, loading, hasMore } })
 }
 
-export const productsTopSellStore = ({ val, limit = 10, page = 1, max = 100 }: { val?: IProducts[], limit?: number, page?: number, max?: number }) => async (dispatch: any, subscribe: any) => {
-   let data: IPagination<IProducts[]> = {
+export const productsTopSellStore = ({ val, limit = 10, page = 1, max = 100 }: { val?: IProduct[], limit?: number, page?: number, max?: number }) => async (dispatch: any, subscribe: any) => {
+   let data: IPagination<IProduct[]> = {
       data: [],
       meta: undefined
    }
@@ -136,4 +136,25 @@ export const productsTopSellStore = ({ val, limit = 10, page = 1, max = 100 }: {
 
    dispatch({ type: 'PRODUCTS_TOP_SELL', payload: { data, isSetData, loading, hasMore } })
    return subscribe({ type: 'PRODUCTS_TOP_SELL', payload: { data, isSetData, loading, hasMore } })
+}
+
+export const priceMaxStore = () => async (dispatch: any, subscribe: any) => {
+   let data = 0
+   try {
+      const res = await getPriceMax()
+      if (res?.data) {
+         data = res.data.priceMax
+      }
+   } catch (error) {
+
+   }
+
+   dispatch({ type: 'PRODUCTS_PRICE_MAX', payload: data })
+   return subscribe({ type: 'PRODUCTS_PRICE_MAX', payload: data })
+}
+
+export const productStore = (data?: IProduct) => async (dispatch: any, subscribe: any) => {
+   console.log(`🚀 ~ file: index.tsx ~ line 157 ~ productStore ~ data`, data)
+   dispatch({ type: 'PRODUCT', payload: data })
+   return subscribe({ type: 'PRODUCT', payload: data })
 }

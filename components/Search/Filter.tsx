@@ -1,5 +1,5 @@
 import { Box, Divider, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Slider, Tab, Tabs, Typography, styled } from '@mui/material'
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { IoFunnel, IoFunnelOutline } from 'react-icons/io5'
 import TextFieldForm from '../Input/TextField'
 import ButtonCT from '../Button/Button'
@@ -10,98 +10,48 @@ import { SearchFromProps } from '.'
 import useCustomRouter from '@/hook/useCustomRouter'
 import { AppDispatch, useAppSelector } from '@/store'
 import { useDispatch } from 'react-redux'
-import { productTypeStore } from '@/store/actions'
+import { priceMaxStore, productTypeStore } from '@/store/actions'
 import numeral from 'numeral'
 import RenderItems from '../Item/RenderItems'
 import TabPanel from '@mui/lab/TabPanel';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
+import useDrawerFilter from './hook/useDrawerFilter'
+import PriceSlider from './PriceSlider'
+import useTabPrice from './hook/useTabPrice'
 
 const Filter = () => {
+
     const dispatch = useDispatch<AppDispatch>()
     const productType = useAppSelector((state) => state.productType)
-    const productsSearch = useAppSelector((state) => state.productsSearch)
-    console.log(`🚀 ~ file: Filter.tsx ~ line 21 ~ Filter ~ products`, productsSearch)
-    // const router = useRouter()
-    const { watch, handleSubmit, setValue } = useFormContext<SearchFromProps>()
+    const priceMax = useAppSelector((state) => state.priceMax)
+    const methods = useFormContext<SearchFromProps>()
+    const { watch, handleSubmit, setValue } = methods
     const price = watch('price')
-    // console.log(`🚀 ~ file: Filter.tsx ~ line 16 ~ Filter ~ price`, price)
     const lowPrice = watch('lowPrice')
-    // console.log(`🚀 ~ file: Filter.tsx ~ line 16 ~ Filter ~ lowPrice`, lowPrice)
     const highPrice = watch('highPrice')
-    // console.log(`🚀 ~ file: Filter.tsx ~ line 18 ~ Filter ~ highPrice`, highPrice)
-    // const pathname = usePathname()
     const { queryParams, pushQueryRouter } = useCustomRouter()
-
-    const [tab, setTab] = React.useState('1');
-    const submitFilterPrice: SubmitHandler<SearchFromProps> = (val) => {
-        if (tab === '2') {
-            queryParams.set('p', '1')
-            queryParams.set('lowPrice', `${val.lowPrice}`)
-            queryParams.set('highPrice', `${val.highPrice}`)
-
-        } else {
-            const [low, high] = val.price
-            queryParams.set('p', '1')
-            queryParams.set('lowPrice', `${low}`)
-            queryParams.set('highPrice', `${high}`)
-        }
-
-        pushQueryRouter(queryParams)
-    }
-    const clearFilterPrice = () => {
-        queryParams.set('p', '1')
-        queryParams.delete('lowPrice')
-        queryParams.delete('highPrice')
-        pushQueryRouter(queryParams)
-        setValue('lowPrice', null)
-        setValue('highPrice', null)
-    }
-    const minDistance = 1;
-    const handleChange2 = (
-        event: Event,
-        newValue: number | number[],
-        activeThumb: number,
-    ) => {
-        if (!Array.isArray(newValue)) {
-            return;
-        }
-
-        if (newValue[1] - newValue[0] < minDistance) {
-            if (activeThumb === 0) {
-                const clamped = Math.min(newValue[0], 100 - minDistance);
-                setValue("price", [clamped, clamped + minDistance]);
-            } else {
-                const clamped = Math.max(newValue[1], minDistance);
-                setValue("price", [clamped - minDistance, clamped]);
-            }
-        } else {
-            setValue("price", newValue as number[]);
-        }
-    };
-    function valuetext(value: number) {
-        return `${numeral(value).format('0.0a')}`;
-    }
-
-
-    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-        setTab(newValue);
-    };
+    const { submitFilterPrice, clearFilterPrice } = useDrawerFilter()
+    const { tabPrice, handleTabPrice } = useTabPrice()
 
     useEffect(() => {
         if (productType.isSetData) return
         dispatch(productTypeStore())
+
     }, [])
-    console.log('productsSearch?.other?.[]', productsSearch?.other?.['priceMax'])
+
+    useEffect(() => {
+        if (priceMax) return
+        dispatch(priceMaxStore())
+    }, [])
+
     return (
         <Box sx={{ height: { xs: `100%`, md: `calc(100dvh - 132px)` }, borderRight: { xs: '', md: `1px solid #f8f8f8` }, pr: { xs: 0, md: 3 } }}>
             <Box display='flex' alignItems='center' gap={1} mb={2}>
                 <IoFunnelOutline /> <Typography variant="body1">ค้นหาแบบละเอียด</Typography>
             </Box>
             <Box mb={3}>
-                <RenderItems
-                    dataLength={productType.data.length}
-                >
+                <RenderItems dataLength={productType.data.length}>
                     <Typography variant="body1" color="">Product type</Typography>
                     <List
                         sx={{ width: '100%', bgcolor: 'background.paper' }}
@@ -133,37 +83,25 @@ const Filter = () => {
             <Typography variant="body1" color="">Price</Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', mb: 1 }}>
 
-                <TabContext value={tab}>
+                <TabContext value={tabPrice}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                        <TabList onChange={handleChange} aria-label="lab API tabs example">
+                        <TabList onChange={handleTabPrice} aria-label="lab API tabs example">
                             <Tab sx={{ width: '50%' }} label="Slider" value="1" />
                             <Tab sx={{ width: '50%' }} label="Input" value="2" />
                         </TabList>
                     </Box>
-                    <TabPanel value="1" sx={{ px: 0 }}>
-                        <PrettoSlider
-                            getAriaLabel={() => 'Minimum distance shift'}
-                            value={price}
-                            onChange={handleChange2}
-                            valueLabelDisplay="auto"
-                            getAriaValueText={valuetext}
-                            disableSwap
-                            valueLabelFormat={valuetext}
-                            // max={400000}
-                            max={productsSearch?.other?.['priceMax']}
-                        // marks
-                        />
+                    <TabPanel value="1" sx={{ px: { xs: '15px', md: 0 } }}>
+                        <PriceSlider />
                         <Box my={1}>Price: ฿{numeral(price?.[0]).format('0,0')} ~ ฿{numeral(price?.[1]).format('0,0')}</Box>
 
                     </TabPanel>
-                    <TabPanel value="2" sx={{ px: 0 }}>
+                    <TabPanel value="2" sx={{ px: { xs: '15px', md: 0 } }}>
                         <Box display='flex' flexDirection='row'>
                             <TextFieldForm
                                 type="text"
                                 placeholder="Low Price"
                                 name="lowPrice"
                                 formType='number'
-                            // rules={{ required: true }}
                             />
                             <Box sx={{ display: 'flex', m: 2 }}>-</Box>
                             <TextFieldForm
@@ -171,8 +109,6 @@ const Filter = () => {
                                 placeholder="High Price"
                                 name="highPrice"
                                 formType='number'
-
-                            // rules={{ required: true }}
                             />
                         </Box>
                         <Box my={1}>Price: ฿{numeral(lowPrice).format('0,0')} ~ ฿{numeral(highPrice).format('0,0')}</Box>
@@ -190,7 +126,7 @@ const Filter = () => {
                 size="large"
                 disableElevation
                 fullWidth
-                disabled={tab === '2' ? !(+(lowPrice ?? 0) < +(highPrice ?? 0)) : undefined}
+                disabled={tabPrice === '2' ? !(+(lowPrice ?? 0) < +(highPrice ?? 0)) : undefined}
                 sx={{ minHeight: '39px !important', }}
                 onClick={handleSubmit(submitFilterPrice)}
             >
@@ -207,7 +143,7 @@ const Filter = () => {
                 // color=
                 // disabled={!(lowPrice && highPrice)}
                 sx={{ minHeight: '39px !important', mt: 2 }}
-                onClick={clearFilterPrice}
+                onClick={() => clearFilterPrice(methods)}
             >
                 Clear All
             </ButtonCT>

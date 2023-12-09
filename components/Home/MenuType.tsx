@@ -109,7 +109,7 @@ const MenuType = () => {
                     justifyContent: `flex-start`,
                 }
             }} px={3} py={2}>
-                <Swiper
+                <StyledSwiper
                     slidesPerView={(mediaIpad && !mediaMobile) ? 3 : mediaMobile ? 2 : 5}
                     grid={{
                         rows: 2,
@@ -141,13 +141,41 @@ const MenuType = () => {
                         )}
 
 
-                </Swiper>
+                </StyledSwiper>
             </Box>
         </Box>
     )
 }
 
 export default MenuType
+
+
+
+const StyledSwiper = styled(Swiper)(() => ({
+    '&.swiper': {
+        width: '100%',
+        height: '100%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+    '& .swiper-slide': {
+        textAlign: `center`,
+        fontSize: `18px`,
+        background: `#fff`,
+        height: `calc((100% - 30px) / 2) !important`,
+        display: `flex`,
+        justifyContent: `center`,
+        alignItems: `center`,
+    },
+
+    // '&.swiper-slide img': {
+    //     display: 'block',
+    //     width: '100%',
+    //     height: ' 100%',
+    //     objectFit: 'cover',
+    // }
+
+}));
 
 
 const StyledBoxItem = styled(Box)(({ theme }) => ({

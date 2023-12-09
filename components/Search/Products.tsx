@@ -1,11 +1,13 @@
-import { useAppSelector } from "@/store"
+import { AppDispatch, useAppSelector } from "@/store"
 import { Box, Grid, Pagination, Typography } from "@mui/material"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import ProductItem, { LoadingProductItem } from "../Item/ProductItem"
-import React, { ReactNode, useCallback } from "react"
+import React, { ReactNode, useCallback, useEffect } from "react"
 import { IoBagHandleOutline, IoCart, IoSearch, IoSearchOutline, IoSparklesOutline } from "react-icons/io5"
 import RenderItems from "../Item/RenderItems"
 import useCustomRouter from "@/hook/useCustomRouter"
+import { useDispatch } from "react-redux"
+import { productsSearchStore } from "@/store/actions"
 
 type Props = {
     list?: boolean
@@ -13,15 +15,33 @@ type Props = {
 
 const Products = ({ list }: Props) => {
     const productsSearch = useAppSelector((state) => state.productsSearch)
-    const router = useRouter()
+    const dispatch = useDispatch<AppDispatch>()
     const searchParams = useSearchParams()
-    const { queryParams, pushQueryRouter } = useCustomRouter()
+    const { queryParams, pushQueryRouter, pushRouter } = useCustomRouter()
+
+    const pageParams = searchParams.get('p') || 1
+    const sortParams = searchParams.get('sort') || ''
+    const searchItemParams = searchParams.get('s') || ''
+    const lowPriceParams = searchParams.get('lowPrice') || ''
+    const highPriceParams = searchParams.get('highPrice') || ''
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         queryParams.set('p', `${value}`)
         pushQueryRouter(queryParams)
-        // router.push(`search/?${createQueryString('p', `${value}`)}`)
     };
+
+    useEffect(() => {
+        dispatch(productsSearchStore({
+            search: searchItemParams,
+            page: +pageParams,
+            order: sortParams,
+            orderByField: 'priceMinusDiscount',
+            lowPrice: lowPriceParams ? +lowPriceParams : undefined,
+            highPrice: highPriceParams ? +highPriceParams : undefined,
+
+        }))
+        console.log('(lowPrice && highPrice)', lowPriceParams, highPriceParams)
+    }, [searchItemParams, pageParams, sortParams, lowPriceParams, highPriceParams])
 
     return (
         <>
@@ -64,7 +84,9 @@ const Products = ({ list }: Props) => {
                 <Grid container spacing={2} mb={3}>
                     {productsSearch?.data?.data?.map((val, idx) =>
                         <Grid key={val.id} item xs={list ? 12 : 6} sm={list ? 12 : 4} md={list ? 12 : 3} lg={list ? 12 : 3}>
-                            <ProductItem list={list} title={val.title} image={val.coverPhoto?.[0]} totalSales={val.salesAmount} price={val.price} discount={val.discount} rating={3} />
+                            <Box onClick={() => {pushRouter(`${val.id}`) }}>
+                                <ProductItem list={list} title={val.title} image={val.coverPhoto?.[0]} totalSales={val.salesAmount} price={val.price} discount={val.discount} rating={3} />
+                            </Box>
                         </Grid>
                     )}
                 </Grid>

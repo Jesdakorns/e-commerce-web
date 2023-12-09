@@ -1,4 +1,4 @@
-import { IPagination, IProductType, IProducts, IPromotions } from "@/network/api/response";
+import { IPagination, IProductType, IProduct, IPromotions } from "@/network/api/response";
 import { useSelector } from "react-redux";
 
 type TFeast = {
@@ -9,7 +9,7 @@ type TFeast = {
 }
 
 export type TProductsState = {
-  data: IPagination<IProducts[]>
+  data: IPagination<IProduct[]>
 } & TFeast
 export type TPromotionsState = IPromotions & TFeast
 export type TProductTypeState = {
@@ -19,14 +19,17 @@ export type TProductTypeState = {
 
 
 export type TInitialState = {
+  priceMax: number
   promotion: TPromotionsState
   productType: TProductTypeState
   products: TProductsState
   productsSearch: TProductsState
   productsTopSell: TProductsState
+  product?: IProduct
 }
 
 const initialState: TInitialState = {
+  priceMax: 0,
   promotion: {
     promotion: [],
     promotionSub: [],
@@ -65,6 +68,7 @@ const initialState: TInitialState = {
     loading: true,
     isSetData: false
   },
+  product: undefined
 };
 
 
@@ -94,6 +98,16 @@ export const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         productsTopSell: action.payload,
+      };
+    case "PRODUCTS_PRICE_MAX":
+      return {
+        ...state,
+        priceMax: action.payload,
+      };
+    case "PRODUCT":
+      return {
+        ...state,
+        product: action.payload,
       };
     default:
       return { ...state };

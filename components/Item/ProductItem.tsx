@@ -1,6 +1,7 @@
 import { Box, Rating, Skeleton, Typography, styled } from '@mui/material';
 import numeral from 'numeral';
-import React from 'react'
+import React, { useMemo } from 'react'
+import SaleTag from './SaleTag';
 
 type Props = {
     title: string,
@@ -35,27 +36,14 @@ export const LoadingProductItem = () => {
 
 
 const ProductItem = ({ title, image, totalSales, price, discount, rating, list }: Props) => {
-
-    const percentDiscount = ((discount ?? 0) * 100) / (price ?? 0)
     return (
         <StyledBoxItem sx={{ flexDirection: list ? 'row' : 'column' }}>
 
-            <Box component="div" className="img" sx={{ width: list ? '120px' : '100%', height: list ? '120px' : '100%', position: 'relative', background: `url("${[process.env.NEXT_PUBLIC_API_BASE_URL, image].filter(val => val).join('/')}")` }}>
-                {discount ? (
-                    <Box sx={{
-                        width: 'fit-content',
-                        position: `absolute`,
-                        right: 0,
-                        marginTop: '8px',
-                        background: '#f5e66b',
-                        padding: `0 10px`,
-                        color: '#B30000',
-                        fontSize: '14px'
-                    }}>-{((discount * 100) / (price ?? 0)).toFixed(Number.isInteger(percentDiscount) ? 0 : 1)}% sale</Box>
-                ) : null}
+            <Box component="div" className="img" sx={{ width: list ? '130px' : '100%', height: list ? '130px' : '100%', position: 'relative', background: `url("${[process.env.NEXT_PUBLIC_API_BASE_URL, image].filter(val => val).join('/')}")` }}>
+                <SaleTag discount={discount ?? 0} price={price ?? 0} />
 
             </Box>
-            <Box display='flex' flexDirection='column' gap={1} px={2} pb={1}>
+            <Box display='flex' flexDirection='column' gap={1} px={2} py={1}>
                 <Typography component='p' className='box-text text-overflow'>{title}</Typography>
                 <Box className="footer-box-text" display='flex' flexDirection='column' justifyContent='space-between' >
                     {(rating !== undefined && rating !== null) ? (
@@ -84,32 +72,22 @@ export default ProductItem
 
 
 
+
+
 const StyledBoxItem = styled(Box)(({ theme }) => ({
-    gap: 10,
     width: '100% ',
     height: '100%',
-    // textAlign: 'center',
     borderRadius: '10px',
     display: 'flex !important',
-    // alignItems: 'center',
-    // justifyContent: 'center',
     flexDirection: 'column',
     cursor: 'pointer',
     backgroundColor: '#ffff',
     marginBottom: '5px',
     '&:hover': {
-        // borderRadius: '10px',
         boxShadow: `0px 2px 14px -9px ${theme.palette.primary.main}`,
         backgroundColor: '#fff',
-        ['@media (max-width: 666px)']: {
-            // margin: 'auto'
-        }
     },
     '& .img': {
-        // width: '100%',
-        // height: '250px',
-        // backgroundSize: 'cover',
-        // backgroundPosition: 'top',
         objectFit: 'cover',
         aspectRatio: '1/1',
         backgroundSize: `contain`,
