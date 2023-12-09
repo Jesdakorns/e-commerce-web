@@ -1,15 +1,14 @@
 import { useAppSelector } from '@/store'
-import { Box, styled } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import React from 'react'
-import { BoxHeading } from '.'
+import { BoxHeading } from '@/components/ProductId'
 
 const ProductDescriptionBox = () => {
     const product = useAppSelector((state) => state.product)
-    console.log(`🚀 ~ file: ProductDescriptionBox.tsx ~ line 7 ~ ProductDescriptionBox ~ product`, product)
     return (
         <Box component='div'>
             <BoxHeading>
-                <Box component='p'>รายละเอียดสินค้า</Box>
+                <Typography variant="subtitle1">รายละเอียดสินค้า</Typography>
             </BoxHeading>
             <Box p={2} dangerouslySetInnerHTML={{ __html: product?.description ?? '' }}>
             </Box>

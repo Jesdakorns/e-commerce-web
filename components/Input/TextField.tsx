@@ -64,7 +64,7 @@ type MODE =
     | 'positiveOnlyInteger'
     | 'positiveOnlyFloat'
 
-interface FormTextInputProps<FieldValue extends Record<string, any>>
+export interface FormTextInputProps<FieldValue extends Record<string, any>>
     extends StandardTextFieldProps {
     control?: Control<FieldValue> | undefined;
     name: FieldPath<FieldValue>;
