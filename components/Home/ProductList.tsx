@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { gsap } from "gsap";
 import store from 'store2';
 import ProductItem from '../Item/ProductItem';
+import useCustomRouter from '@/hook/useCustomRouter';
 
 const items = [
   {
@@ -99,6 +100,7 @@ const ProductList = () => {
   const router = useRouter()
   const refProduct = useRef<any[]>([]);
   const [position, setPosition] = useState(0)
+  const { pushRouter } = useCustomRouter()
 
   const fetchMoreData = () => {
     // setTimeout(() => {
@@ -146,7 +148,7 @@ const ProductList = () => {
         <Grid container spacing={2}>
           {products.data.data.map((val, idx) =>
             <Grid key={val.id} item xs={6} sm={4} md={3} lg={2} ref={e => refProduct.current[idx] = e}>
-              <ProductItem title={val.title} image={val.coverPhoto?.[0]} totalSales={val.salesAmount} price={val.price} discount={val.discount} rating={2} />
+              <Box onClick={() => pushRouter(`/${val.id}`)}><ProductItem title={val.title} image={val.coverPhoto?.[0]} totalSales={val.salesAmount} price={val.price} discount={val.discount} rating={2} /></Box>
             </Grid>
           )}
         </Grid>

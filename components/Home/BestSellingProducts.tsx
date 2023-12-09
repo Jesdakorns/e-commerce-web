@@ -8,6 +8,7 @@ import { AppDispatch, useAppSelector } from '@/store';
 import { useDispatch } from 'react-redux';
 import { productsTopSellStore } from '@/store/actions';
 import ProductItem from '../Item/ProductItem';
+import useCustomRouter from '@/hook/useCustomRouter';
 
 const items = [
     {
@@ -76,6 +77,7 @@ const BestSellingProducts = () => {
     const mediaMobile = useMediaQuery(themeMui.breakpoints.down('sm'))
     const productsTopSell = useAppSelector((state) => state.productsTopSell)
     const dispatch = useDispatch<AppDispatch>()
+    const { pushRouter } = useCustomRouter()
 
     useEffect(() => {
         if (productsTopSell.isSetData) return
@@ -100,7 +102,9 @@ const BestSellingProducts = () => {
                     {productsTopSell.data.data.map((val, idx) => {
                         return (
                             <SwiperSlide key={idx}>
-                                <ProductItem title={val.title} image={val.coverPhoto?.[0]} />
+                                <Box onClick={() => pushRouter(`/${val.id}`)}>
+                                    <ProductItem title={val.title} image={val.coverPhoto?.[0]} />
+                                </Box>
                             </SwiperSlide>
                         )
                     })}

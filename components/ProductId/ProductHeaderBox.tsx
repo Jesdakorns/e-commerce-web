@@ -49,6 +49,7 @@ const ProductHeaderBox = () => {
                                 return (
                                     <SwiperSlide key={idx}>
                                         <Box
+                                            onClick={() => { setReviewPhoto(val) }}
                                             onMouseOver={() => { setReviewPhoto(val) }}
                                             height='100%' sx={{ background: `url("${[process.env.NEXT_PUBLIC_API_BASE_URL, val].filter(val => val).join('/')}")`, aspectRatio: '1/1', objectFit: 'cover', backgroundPosition: `center`, backgroundRepeat: `no-repeat`, backgroundSize: `contain`, }}>
                                         </Box>
